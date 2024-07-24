@@ -5,4 +5,5 @@ app_name = 'trainer'
 
 urlpatterns = [
     path('', views.trainer_cards, name='trainer_cards'),
+    path('get-card/', views.get_card,),
 ]
