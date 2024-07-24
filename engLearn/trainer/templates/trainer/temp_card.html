@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <!--ICONS-->
+    <script src="https://kit.fontawesome.com/0960a95ef5.js" crossorigin="anonymous"></script>
+</head>
+<style>
+    #word-card {
+
+
+    }
+
+    .card-wraper {
+        min-width: 600px;
+        max-width: 900px;
+        position: relative;
+        perspective: 1000px;
+    }
+
+    #front,
+    #back {
+        width: 100%;
+        position: absolute;
+        backface-visibility: hidden;
+        /* transition: 1s; */
+    }
+    .card{
+
+    }
+    .card-body{
+        min-height: 200px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    #back {
+        transform: rotateY(180deg);
+    }
+
+    #answer-options{
+
+    }
+
+    #answer-options .answer-option{
+        margin-top: 2px;
+        margin-bottom: 2px;
+    }
+
+    #next-card{
+        width: 100px;
+    }
+</style>
+
+<body>
+    <div class="container ">
+        <div id="word-card" class="d-flex justify-content-center">
+            <div class="card-wraper">
+                <div id="front">
+                    <div class="card text-center" >
+                        <div class="card-header">
+                            #0
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Front</h5>
+                            <p class="card-text" id="sentence">With supporting text below as a natural lead-in to additional content.
+                                With supporting text below as a natural lead-in to additional content.
+                                With supporting text below as a natural lead-in to additional content.
+                                With supporting text below as a natural lead-in to additional content.
+                            </p>
+                            <div id="answer-options">
+                                <button type="button" class="btn btn-outline-primary answer-option">Word 1</button>
+                                <button type="button" class="btn btn-outline-primary answer-option">Word 2</button>
+                                <button type="button" class="btn btn-outline-primary answer-option">Word 3</button>
+                                <button type="button" class="btn btn-outline-primary answer-option">Word 1</button>
+                                <button type="button" class="btn btn-outline-primary answer-option">Word 2</button>
+                                <button type="button" class="btn btn-outline-primary answer-option">Word 3</button>
+                                <button type="button" class="btn btn-outline-primary answer-option">Word 2</button>
+                                <button type="button" class="btn btn-outline-primary answer-option">Word 3</button>
+                                <button type="button" class="btn btn-outline-primary answer-option">Word 1</button>
+                                <button type="button" class="btn btn-outline-primary answer-option">Word 2</button>
+                                <button type="button" class="btn btn-outline-primary answer-option">Word 3</button>
+                            </div>
+                        </div>
+                        <div class="card-footer text-muted">
+                            <button type="button" class="btn btn-outline-secondary">Не показывать</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="back">
+                    <div class="card text-center" >
+                        <div class="card-header">
+                            <b style="color:#148014" class="correct-answer">Верно</b>
+                            <b style="color: #c62424" class="incorrect-answer">Неверно</b>
+                        </div>
+                        <div class="card-body">
+                            <h5 id="answer-translate" >Front - Лицевая сторона</h5>
+                            <p id="wrong-answer-translate" class="incorrect-answer"><b>Wrong</b> - Неправильный ответ</p>
+                            <a id="next-card" href="#" class="btn btn-primary" id="next-word"><i class="fas fa-forward" aria-hidden="true"></i></a>
+                        </div>
+                        <div class="card-footer text-muted">
+                            <button type="button" class="btn btn-outline-secondary">Не показывать</button>
+                            <button type="button" class="btn btn-outline-success correct-answer">Изучил</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <script>
+        class Card {
+            static FLIP_TRANSITION = '1s'
+
+            constructor(elemId) {
+                this.elem = document.getElementById(elemId)
+                this.cardWrapElem = this.elem.querySelector('.card-wraper')
+                this.back =  document.getElementById('back')
+                this.front =  document.getElementById('front')
+                this.nextCardBtn = document.getElementById('next-card')
+                this.sentenceBlock = document.getElementById('sentence')
+                this._wrongAnswerBlock = document.getElementById('wrong-answer-translate')
+                this.correctAnswerElems = this.elem.querySelectorAll('.correct-answer')
+                this.incorrectAnswerElems = this.elem.querySelectorAll('.incorrect-answer')
+                this._is_front = true;
+
+                this._init()
+            }
+
+            get frontHeight(){
+                return this.front.offsetHeight
+            }
+            get backHeight(){
+                return this.back.offsetHeight
+            }
+
+            set flipTransition(time){
+                this.back.style.transition = time
+                this.front.style.transition = time
+            }
+
+
+            _init(){
+                this.nextCardBtn.addEventListener('click', () => {
+                    console.log('nextCardBtn',  this.nextWor)
+                    this.nextWord()
+                })
+
+                this.cardWrapElem.style.height = this.frontHeight + 'px'
+                this.flipTransition = Card.FLIP_TRANSITION
+            }
+            nextWord(){
+                $(card.elem,).slideUp(() => {
+                    this.showFront(false)
+                }).slideDown()
+
+            }
+            flip(){
+                if (this._is_front){
+                    this.showBack()
+                } else {
+                    this.showFront()
+                }
+            }
+
+            showBack(quick=true) {
+                if (quick){
+                    this.flipTransition = Card.FLIP_TRANSITION
+                } else {
+                    this.flipTransition = '0s'
+                }
+                $(this.front).css("transform", "rotateY(180deg)");
+                $(this.back).css("transform", "rotateY(0deg)");
+                this.cardWrapElem.style.height = this.backHeight + 'px'
+                this._is_front = false;
+            }
+            showFront(quick=true){
+                if (quick){
+                    this.flipTransition = Card.FLIP_TRANSITION
+                } else {
+                    this.flipTransition = '0s'
+                }
+                $(this.front).css("transform", "rotateY(0deg)");
+                $(this.back).css("transform", "rotateY(180deg)");
+                this.cardWrapElem.style.height = this.frontHeight + 'px'
+                this._is_front = true;
+            }
+
+
+
+            _slideDown(){
+
+            }
+
+            _slideDown(){
+
+            }
+
+            _showBackCorectItems(){
+                this.correctAnswerElems.forEach(elem => elem.style.display = 'inline-block')
+                this.incorrectAnswerElems.forEach(elem => elem.style.display = 'none')
+            }
+            _showBackIncorrectItems(){
+                this.correctAnswerElems.forEach(elem => elem.style.display = 'none')
+                this.incorrectAnswerElems.forEach(elem => elem.style.display = 'inline-block')
+            }
+        }
+
+        const card = new Card('word-card')
+    </script>
+</body>
+
+</html>
