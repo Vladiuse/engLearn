@@ -14,3 +14,9 @@ class IrregularVerb(models.Model):
     first_form = models.OneToOneField(Word, on_delete=models.PROTECT)
     second_form = models.CharField(max_length=30)
     third_form = models.CharField(max_length=30)
+
+
+class Sentence(models.Model):
+    word = models.ForeignKey(to=Word, on_delete=models.CASCADE)
+    end = models.CharField(max_length=255)
+    ru = models.CharField(max_length=255, blank=True)
