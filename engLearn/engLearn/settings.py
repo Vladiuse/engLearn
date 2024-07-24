@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'words.apps.WordsConfig',
+    'trainer.apps.TrainerConfig',
 
     'django_extensions',
     'rest_framework',
