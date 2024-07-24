@@ -150,15 +150,19 @@
 
 
             _init(){
+                // Код инициализации
+
+                // Обьявление событий
                 this.nextCardBtn.addEventListener('click', () => {
                     console.log('nextCardBtn',  this.nextWor)
                     this.nextWord()
                 })
-
+                // установка враперу карты нужной высоты
                 this.cardWrapElem.style.height = this.frontHeight + 'px'
+                // установка времени врадения карточки
                 this.flipTransition = Card.FLIP_TRANSITION
             }
-            nextWord(){
+            nextCard(){
                 $(card.elem,).slideUp(() => {
                     this.showFront(false)
                 }).slideDown()
@@ -173,49 +177,50 @@
             }
 
             showBack(quick=true) {
-                if (quick){
-                    this.flipTransition = Card.FLIP_TRANSITION
-                } else {
-                    this.flipTransition = '0s'
-                }
-                $(this.front).css("transform", "rotateY(180deg)");
-                $(this.back).css("transform", "rotateY(0deg)");
-                this.cardWrapElem.style.height = this.backHeight + 'px'
-                this._is_front = false;
+                this._showSide('back', quick)
             }
             showFront(quick=true){
+                this._showSide('front', quick)
+            }
+
+            _showSide(side, quick){
                 if (quick){
                     this.flipTransition = Card.FLIP_TRANSITION
                 } else {
                     this.flipTransition = '0s'
                 }
-                $(this.front).css("transform", "rotateY(0deg)");
-                $(this.back).css("transform", "rotateY(180deg)");
-                this.cardWrapElem.style.height = this.frontHeight + 'px'
-                this._is_front = true;
+                if (side == 'front'){
+                    $(this.front).css("transform", "rotateY(0deg)");
+                    $(this.back).css("transform", "rotateY(180deg)");
+                    this.cardWrapElem.style.height = this.frontHeight + 'px'
+                    this._is_front = true;
+                } else if (side == 'back'){
+                    $(this.front).css("transform", "rotateY(180deg)");
+                    $(this.back).css("transform", "rotateY(0deg)");
+                    this.cardWrapElem.style.height = this.backHeight + 'px'
+                    this._is_front = false;
+                } else {
+                    console.error('Incorrect side')
+                }
+                this._is_front = false;
             }
 
-
-
-            _slideDown(){
-
-            }
-
-            _slideDown(){
-
-            }
 
             _showBackCorectItems(){
+                // отобразить на тыльной стороне только элементы правильного ответа
                 this.correctAnswerElems.forEach(elem => elem.style.display = 'inline-block')
                 this.incorrectAnswerElems.forEach(elem => elem.style.display = 'none')
             }
             _showBackIncorrectItems(){
+                // отобразить на тыльной стороне только элементы НЕправильного ответа
                 this.correctAnswerElems.forEach(elem => elem.style.display = 'none')
                 this.incorrectAnswerElems.forEach(elem => elem.style.display = 'inline-block')
             }
         }
 
         const card = new Card('word-card')
+
+
     </script>
 </body>
 
