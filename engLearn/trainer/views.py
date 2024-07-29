@@ -1,3 +1,4 @@
+import random as r
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from .serializers import TranslationDirectionSerializer, CardSerializer
@@ -18,7 +19,9 @@ def get_card(request, format=None):
     serializer.is_valid(raise_exception=True)
     lang_direction = serializer.save()
     word = Word.objects.order_by('?').first()
-    answers = Word.objects.exclude(pk=word.pk).order_by('?')[:5]
+    answers = list(Word.objects.exclude(pk=word.pk).order_by('?')[:5])
+    answers.append(word)
+    r.shuffle(answers)
     card_serializer = CardSerializer(target=word, answers=answers, lang_direction=lang_direction)
     return Response(card_serializer.data)
 
