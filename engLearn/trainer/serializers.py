@@ -4,8 +4,10 @@ from words.models import Word, TranslationDirection
 
 
 class TranslationDirectionSerializer(serializers.Serializer):
-    lang = serializers.ChoiceField(choices=['en-ru', 'ru-en'])
+    direction = serializers.ChoiceField(choices=TranslationDirection.AVAILABLE)
 
+    def create(self, validated_data):
+        return TranslationDirection(direction=validated_data['direction'])
 
 
 class WordCardSerializer(serializers.ModelSerializer):
@@ -31,17 +33,18 @@ class WordCardSerializer(serializers.ModelSerializer):
 
 class CardSerializer:
 
-    def __init__(self, word: Word, answers, lang: TranslationDirection):
-        self.word = word
+    def __init__(self, target: Word, answers, lang_direction: TranslationDirection):
+        self.target = target
         self.answers = answers
-        self.lang = lang
+        self.lang_direction = lang_direction
 
     @property
     def data(self):
         data = {
-            'word': WordCardSerializer(self.word, lang=self.lang).data,
-            'answers': WordCardSerializer(self.answers, lang=self.lang.reverse(), many=True).data,
+            'target': WordCardSerializer(self.target, lang=self.lang_direction).data,
+            'answers': WordCardSerializer(self.answers, lang=self.lang_direction, many=True).data,
 
-            'lang': str(self.lang),
+            # 'lang': str(self.lang),
+            'lang_direction': TranslationDirectionSerializer(self.lang_direction).data
         }
         return data

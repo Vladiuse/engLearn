@@ -13,10 +13,7 @@
     <script src="https://kit.fontawesome.com/0960a95ef5.js" crossorigin="anonymous"></script>
 </head>
 <style>
-    #word-card {
-
-
-    }
+    #word-card {}
 
     .card-wraper {
         min-width: 600px;
@@ -32,30 +29,31 @@
         backface-visibility: hidden;
         /* transition: 1s; */
     }
-    .card{
 
-    }
-    .card-body{
+    .card {}
+
+    .card-body {
         min-height: 200px;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
     }
+
     #back {
         transform: rotateY(180deg);
     }
-
-    #answer-options{
-
+    #word{
+        padding: 10px 0;
+    }
+    #answers {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        justify-content: center;
     }
 
-    #answer-options .answer-option{
-        margin-top: 2px;
-        margin-bottom: 2px;
-    }
-
-    #next-card{
+    #next-card {
         width: 100px;
     }
 </style>
@@ -65,18 +63,19 @@
         <div id="word-card" class="d-flex justify-content-center">
             <div class="card-wraper">
                 <div id="front">
-                    <div class="card text-center" >
+                    <div class="card text-center">
                         <div class="card-header">
                             #0
                         </div>
                         <div class="card-body">
-                            <h5 class="card-title">Front</h5>
-                            <p class="card-text" id="sentence">With supporting text below as a natural lead-in to additional content.
+                            <h5 class="card-title" id="word">Front</h5>
+                            <!-- <p class="card-text" id="sentence">With supporting text below as a natural lead-in to
+                                additional content.
                                 With supporting text below as a natural lead-in to additional content.
                                 With supporting text below as a natural lead-in to additional content.
                                 With supporting text below as a natural lead-in to additional content.
-                            </p>
-                            <div id="answer-options">
+                            </p> -->
+                            <div id="answers">
                                 <button type="button" class="btn btn-outline-primary answer-option">Word 1</button>
                                 <button type="button" class="btn btn-outline-primary answer-option">Word 2</button>
                                 <button type="button" class="btn btn-outline-primary answer-option">Word 3</button>
@@ -96,15 +95,17 @@
                     </div>
                 </div>
                 <div id="back">
-                    <div class="card text-center" >
+                    <div class="card text-center">
                         <div class="card-header">
                             <b style="color:#148014" class="correct-answer">Верно</b>
                             <b style="color: #c62424" class="incorrect-answer">Неверно</b>
                         </div>
                         <div class="card-body">
-                            <h5 id="answer-translate" >Front - Лицевая сторона</h5>
-                            <p id="wrong-answer-translate" class="incorrect-answer"><b>Wrong</b> - Неправильный ответ</p>
-                            <a id="next-card" href="#" class="btn btn-primary" id="next-word"><i class="fas fa-forward" aria-hidden="true"></i></a>
+                            <h5 id="word-translate">Front - Лицевая сторона</h5>
+                            <p id="wrong-answer-translate" class="incorrect-answer"><b>Wrong</b> - Неправильный ответ
+                            </p>
+                            <a id="next-card" href="#" class="btn btn-primary" id="next-word"><i class="fas fa-forward"
+                                    aria-hidden="true"></i></a>
                         </div>
                         <div class="card-footer text-muted">
                             <button type="button" class="btn btn-outline-secondary">Не показывать</button>
@@ -118,45 +119,72 @@
         </div>
     </div>
     <script>
+
+        class Cards {
+
+            async loadCard() {
+                var url = 'http://127.0.0.1:8000/trainer/get-card/?direction=ru-en'
+                try {
+                    const response = await fetch(url);
+                    if (!response.ok) {
+                        throw new Error(`Response status: ${response.status}`);
+                    }
+
+                    const json = await response.json();
+                    // console.log(json);
+                    return json
+                } catch (error) {
+                    // console.error(error.message);
+                    return error
+                }
+
+            }
+        }
+        const cards = new Cards()
+
         class Card {
             static FLIP_TRANSITION = '1s'
 
             constructor(elemId) {
                 this.elem = document.getElementById(elemId)
                 this.cardWrapElem = this.elem.querySelector('.card-wraper')
-                this.back =  document.getElementById('back')
-                this.front =  document.getElementById('front')
+                this.back = document.getElementById('back')
+                this.front = document.getElementById('front')
                 this.nextCardBtn = document.getElementById('next-card')
                 this.sentenceBlock = document.getElementById('sentence')
                 this._wrongAnswerBlock = document.getElementById('wrong-answer-translate')
                 this.correctAnswerElems = this.elem.querySelectorAll('.correct-answer')
                 this.incorrectAnswerElems = this.elem.querySelectorAll('.incorrect-answer')
+
+                this.wordElem = document.getElementById('word')
+                this.wordTranslateElem = document.getElementById('word-translate')
+                this.asnwerBlock = document.getElementById('answers')
                 this._is_front = true;
 
                 this._init()
             }
 
-            get frontHeight(){
+            get frontHeight() {
                 // высота блока фронтальной части карточки
                 return this.front.offsetHeight
             }
-            get backHeight(){
+            get backHeight() {
                 // высота блока тыльной части карточки 
                 return this.back.offsetHeight
             }
 
-            set flipTransition(time){
+            set flipTransition(time) {
                 this.back.style.transition = time
                 this.front.style.transition = time
             }
 
 
-            _init(){
+            _init() {
                 // Код инициализации
 
                 // Обьявление событий
                 this.nextCardBtn.addEventListener('click', () => {
-                    console.log('nextCardBtn',  this.nextWor)
+                    console.log('nextCardBtn', this.nextWor)
                     this.nextWord()
                 })
                 // установка враперу карты нужной высоты
@@ -164,39 +192,39 @@
                 // установка времени врадения карточки
                 this.flipTransition = Card.FLIP_TRANSITION
             }
-            nextCard(){
+            nextCard() {
                 $(card.elem,).slideUp(() => {
                     this.showFront(false)
                 }).slideDown()
 
             }
-            flip(){
-                if (this._is_front){
+            flip() {
+                if (this._is_front) {
                     this.showBack()
                 } else {
                     this.showFront()
                 }
             }
 
-            showBack(quick=true) {
+            showBack(quick = true) {
                 this._showSide('back', quick)
             }
-            showFront(quick=true){
+            showFront(quick = true) {
                 this._showSide('front', quick)
             }
 
-            _showSide(side, quick){
-                if (quick){
+            _showSide(side, quick) {
+                if (quick) {
                     this.flipTransition = Card.FLIP_TRANSITION
                 } else {
                     this.flipTransition = '0s'
                 }
-                if (side == 'front'){
+                if (side == 'front') {
                     $(this.front).css("transform", "rotateY(0deg)");
                     $(this.back).css("transform", "rotateY(180deg)");
                     this.cardWrapElem.style.height = this.frontHeight + 'px'
                     this._is_front = true;
-                } else if (side == 'back'){
+                } else if (side == 'back') {
                     $(this.front).css("transform", "rotateY(180deg)");
                     $(this.back).css("transform", "rotateY(0deg)");
                     this.cardWrapElem.style.height = this.backHeight + 'px'
@@ -208,15 +236,71 @@
             }
 
 
-            _showBackCorectItems(){
+            _showBackCorectItems() {
                 // отобразить на тыльной стороне только элементы правильного ответа
                 this.correctAnswerElems.forEach(elem => elem.style.display = 'inline-block')
                 this.incorrectAnswerElems.forEach(elem => elem.style.display = 'none')
             }
-            _showBackIncorrectItems(){
+            _showBackIncorrectItems() {
                 // отобразить на тыльной стороне только элементы НЕправильного ответа
                 this.correctAnswerElems.forEach(elem => elem.style.display = 'none')
                 this.incorrectAnswerElems.forEach(elem => elem.style.display = 'inline-block')
+            }
+
+            getCard() {
+                cards.loadCard().then(card => {
+                    console.log(card)
+                }).catch(error => {
+                    console.error(error)
+                })
+            }
+
+            _drawCard(cardData) {
+                cardData = {
+                    "target": {
+                        "id": 3006,
+                        "word": "камеры",
+                        "translate": "cameras",
+                        "number_in_dict": 3006
+                    },
+                    "answers": [
+                        {
+                            "id": 772,
+                            "word": "обычно",
+                            "translate": "usually",
+                            "number_in_dict": 772
+                        },
+                        {
+                            "id": 6271,
+                            "word": "кустарники",
+                            "translate": "bushes",
+                            "number_in_dict": 6271
+                        },
+                        
+                    ],
+                    "lang_direction": {
+                        "direction": "ru-en"
+                    }
+                    
+                }
+                this.wordElem.innerText = cardData['target']['word']
+                this.wordTranslateElem.innerText = cardData['target']['translate']
+
+                this.asnwerBlock.innerHTML = ''
+                cardData['answers'].forEach(word => {
+                    console.log(word)
+                    this._drawAnswerBtn(word)
+                })
+                
+                
+            }
+            _drawAnswerBtn(word){
+                var btn = document.createElement('button')
+                btn.innerText = word['translate']
+                btn.classList.add('btn', 'btn-outline-primary' ,'answer-option')
+                btn.dataset.wordId = word['id']
+                btn.setAttribute('type', 'bytton')
+                this.asnwerBlock.appendChild(btn)
             }
         }
 

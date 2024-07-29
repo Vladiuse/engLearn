@@ -16,11 +16,9 @@ def trainer_cards(request):
 def get_card(request, format=None):
     serializer = TranslationDirectionSerializer(data=request.query_params)
     serializer.is_valid(raise_exception=True)
+    lang_direction = serializer.save()
     word = Word.objects.order_by('?').first()
-    data = {
-        'lang': serializer.validated_data['lang'],
-        **word.__dict__,
-    }
-    card_serializer = CardSerializer(data)
+    answers = Word.objects.exclude(pk=word.pk).order_by('?')[:5]
+    card_serializer = CardSerializer(target=word, answers=answers, lang_direction=lang_direction)
     return Response(card_serializer.data)
 

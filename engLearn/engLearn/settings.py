@@ -41,6 +41,10 @@ INTERNAL_IPS = [
     # ...
 ]
 
+CORS_ALLOWED_ORIGINS = [
+    "http://127.0.0.1:5500",
+]
+
 
 # Application definition
 
@@ -58,10 +62,14 @@ INSTALLED_APPS = [
     'django_extensions',
     'rest_framework',
     "debug_toolbar",
+    "corsheaders",
 
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
+
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
