@@ -1,9 +1,34 @@
 from django.db import models
 
+class TranslationDirection:
+
+    AVAILABLE = ('en-ru', 'ru-en')
+
+    def __init__(self, lang:str):
+        self.lang = lang
+        if self.lang not in TranslationDirection.AVAILABLE:
+            raise ValueError('Incorrect lang')
+
+    def __str__(self):
+        return self.lang
+
+    @property
+    def source_lang(self) -> str:
+        return self.lang.split('-')[0]
+
+    @property
+    def target_lang(self) -> str:
+        return self.lang.split('-')[-1]
+    def reverse(self) -> 'TranslationDirection':
+        lang = self.target_lang + '-' + self.source_lang
+        return TranslationDirection(lang)
+
+
 
 class Word(models.Model):
+
     number_in_dict = models.PositiveIntegerField(blank=True, null=True)
-    eng = models.CharField(max_length=100, unique=True)
+    en = models.CharField(max_length=100, unique=True)
     ru = models.CharField(max_length=100)
 
     class Meta:

@@ -3,17 +3,17 @@ from .models import Word, IrregularVerb
 
 
 class WordAdmin(admin.ModelAdmin):
-    list_display = ['number_in_dict', 'eng', 'ru']
-    search_fields = ['eng', 'ru']
-    list_display_links = ['eng', 'ru']
+    list_display = ['number_in_dict', 'en', 'ru']
+    search_fields = ['en', 'ru']
+    list_display_links = ['en', 'ru']
 
 
 class IrregularVerbAdmin(admin.ModelAdmin):
-    list_display = ['first_form__eng', 'second_form', 'third_form']
+    list_display = ['first_form__en', 'second_form', 'third_form']
 
     @admin.display()
-    def first_form__eng(self, obj):
-        return obj.first_form.eng
+    def first_form__en(self, obj):
+        return obj.first_form.en
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)

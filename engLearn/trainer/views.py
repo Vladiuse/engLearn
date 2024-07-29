@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework.decorators import api_view
-from .serializers import TrainerLangSerializer, CardSerializer
+from .serializers import TranslationDirectionSerializer, CardSerializer
 from rest_framework.response import Response
 from words.models import Word
 
@@ -14,9 +14,9 @@ def trainer_cards(request):
 
 @api_view()
 def get_card(request, format=None):
-    serializer = TrainerLangSerializer(data=request.query_params)
+    serializer = TranslationDirectionSerializer(data=request.query_params)
     serializer.is_valid(raise_exception=True)
-    word = Word.objects.order_by('?')[0]
+    word = Word.objects.order_by('?').first()
     data = {
         'lang': serializer.validated_data['lang'],
         **word.__dict__,
