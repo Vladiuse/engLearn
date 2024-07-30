@@ -19,7 +19,7 @@ class WordCardSerializer(serializers.ModelSerializer):
     translate = serializers.SerializerMethodField()
 
     def __init__(self, *args, **kwargs):
-        self.lang = kwargs.pop('lang', 213)
+        self.lang = kwargs.pop('lang')
         super().__init__(*args, **kwargs)
 
     def get_word(self, obj):

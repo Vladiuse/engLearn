@@ -58,6 +58,7 @@ INSTALLED_APPS = [
 
     'words.apps.WordsConfig',
     'trainer.apps.TrainerConfig',
+    'vocabulary.apps.VocabularyConfig',
 
     'django_extensions',
     'rest_framework',
