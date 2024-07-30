@@ -4,6 +4,7 @@ from rest_framework.decorators import api_view
 from .serializers import TranslationDirectionSerializer, CardSerializer
 from rest_framework.response import Response
 from words.models import Word
+from .trainer import Trainer
 
 
 def trainer_cards(request):
@@ -19,7 +20,7 @@ def get_card(request, format=None):
     serializer.is_valid(raise_exception=True)
     lang_direction = serializer.save()
     word = Word.objects.order_by('?').first()
-    answers = list(Word.objects.exclude(pk=word.pk).order_by('?')[:5])
+    answers = list(Word.objects.exclude(pk=word.pk).order_by('?')[:Trainer.ANSWERS_COUNT - 1])
     answers.append(word)
     r.shuffle(answers)
     card_serializer = CardSerializer(target=word, answers=answers, lang_direction=lang_direction)
