@@ -213,14 +213,17 @@
                 // Код инициализации
 
                 // Обьявление событий
+
+                // евент при клике на кнопку - следующая карточка
                 this.nextCardBtn.addEventListener('click', () => {
-                    console.log('nextCardBtn', this.nextWor)
-                    this.nextWord()
+                    cardTrainer.nextCard()
+
                 })
                 // установка враперу карты нужной высоты
                 this.cardWrapElem.style.height = this.frontHeight + 'px'
                 // установка времени врадения карточки
                 this.flipTransition = CardView.FLIP_TRANSITION
+
             }
             nextCard() {
                 $(card.elem,).slideUp(() => {
@@ -236,13 +239,15 @@
                 }
             }
 
-            slideUp(callback) {
-                $(this.cardWrapElem).slideUp(callback)
+            nextCard(target, answers){
+                $(this.cardWrapElem).slideUp(() =>{
+                    console.log(target, answers)
+                    this.drawCard(target, answers)
+                    this.showFront(true)
+                }).slideDown()
             }
 
-            slideDown(callback) {
-                $(this.cardWrapElem).slideDown(callback)
-            }
+
 
             showBack(quick = true) {
                 this._showSide('back', quick)
@@ -260,17 +265,19 @@
                 if (side == 'front') {
                     $(this.front).css("transform", "rotateY(0deg)");
                     $(this.back).css("transform", "rotateY(180deg)");
-                    this.cardWrapElem.style.height = this.frontHeight + 'px'
+                    // this.cardWrapElem.style.height = this.frontHeight + 'px'
+                    // console.log(this.frontHeight + 'px')
                     this._is_front = true;
                 } else if (side == 'back') {
                     $(this.front).css("transform", "rotateY(180deg)");
                     $(this.back).css("transform", "rotateY(0deg)");
-                    this.cardWrapElem.style.height = this.backHeight + 'px'
+                    // this.cardWrapElem.style.height = this.backHeight + 'px'
+                    // console.log(this.backHeight + 'px')
                     this._is_front = false;
                 } else {
                     console.error('Incorrect side')
                 }
-                this._is_front = false;
+
             }
 
 
@@ -291,7 +298,7 @@
                 this.wrongAnswerBlock.innerText = text
             }
 
-            _drawCard(target, answers) {
+            drawCard(target, answers) {
                 this._drawTargetWord(target)
                 this._drawAnswerButtons(answers)
             }
@@ -303,6 +310,7 @@
             }
 
             _drawAnswerButtons(answers) {
+                console.log(answers, 'xxxx')
                 this.asnwerBlock.innerHTML = ''
                 answers.forEach(word => {
                     this._drawAnswerBtn(word)
@@ -361,7 +369,7 @@
                 })
             }
             drawCard() {
-                cardView._drawCard(this.target, this.answeersList)
+                cardView.drawCard(this.target, this.answeersList)
             }
 
 
@@ -380,14 +388,8 @@
             }
 
             nextCard() {
-                cardView.slideUp(() => {
-                    console.log('AFTER')
-                    this.drawCard()
-                    cardView.showFront(true)
-                    cardView.slideDown()
-                })
-                
-                
+                cardView.nextCard(this.target, this.answeersList)
+                this.getCard()
             }
         }
         var cardTrainer = new CardTrainer()
