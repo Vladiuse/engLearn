@@ -147,7 +147,7 @@
     </script>
     <script>
 
-        class Cards {
+        class CardsApi {
 
             async loadCard() {
                 var url = 'http://127.0.0.1:8000/trainer/get-card/?direction=ru-en'
@@ -159,7 +159,7 @@
 
                     const json = await response.json();
                     // console.log(json);
-                    return json
+                    return new Card(json)
                 } catch (error) {
                     console.error(error.message);
                     showError('Card not loaded: ' + error.message)
@@ -168,13 +168,39 @@
 
             }
         }
-        
+
+        class Card {
+            constructor(cardData) {
+                this.target = cardData['target']
+                this.answersList = cardData['answers']
+                this.lang_direction = cardData['lang_direction']['direction']
+                this._answers = {}
+
+                this._init()
+            }
+
+            _init() {
+                this.answersList.forEach(word => {
+                    this._answers[word['id']] = word
+                })
+            }
+
+            getWordById(wordId) {
+                return this._answers[wordId]
+            }
+
+            isAnwerCorrect(wordId) {
+                return wordId == this.target['id']
+            }
+        }
+
 
         class CardView {
             static FLIP_TRANSITION = '1s'
 
-            constructor(elemId) {
-                this.elem = document.getElementById(elemId)
+            constructor() {
+                this.elem = document.getElementById('word-card')
+                this.cardHeader = this.elem.querySelector('.card-header')
                 this.cardWrapElem = this.elem.querySelector('.card-wraper')
                 this.back = document.getElementById('back')
                 this.front = document.getElementById('front')
@@ -183,7 +209,6 @@
                 this.wrongAnswerBlock = document.getElementById('wrong-answer-translate')
                 this.correctAnswerElems = this.elem.querySelectorAll('.correct-answer')
                 this.incorrectAnswerElems = this.elem.querySelectorAll('.incorrect-answer')
-
                 this.wordElem = document.getElementById('word')
                 this.wordTranslateElem = document.getElementById('word-translate')
                 this.asnwerBlock = document.getElementById('answers')
@@ -217,13 +242,11 @@
                 // евент при клике на кнопку - следующая карточка
                 this.nextCardBtn.addEventListener('click', () => {
                     cardTrainer.nextCard()
-
                 })
                 // установка враперу карты нужной высоты
                 this.cardWrapElem.style.height = this.frontHeight + 'px'
                 // установка времени врадения карточки
                 this.flipTransition = CardView.FLIP_TRANSITION
-
             }
 
             flip() {
@@ -234,15 +257,13 @@
                 }
             }
 
-            nextCard(target, answers){
+            showNextCard(card) {
                 // отривосать следующую карту
-                $(this.cardWrapElem).slideUp(() =>{
-                    this.drawCard(target, answers)
+                $(this.cardWrapElem).slideUp(() => {
+                    this.drawCard(card)
                     this.showFront(true)
                 }).slideDown()
             }
-
-
 
             showBack(quick = true) {
                 this._showSide('back', quick)
@@ -281,12 +302,12 @@
                 this.correctAnswerElems.forEach(elem => elem.style.display = 'inline-block')
                 this.incorrectAnswerElems.forEach(elem => elem.style.display = 'none')
             }
-            _showBackIncorrectItems(userWrongAnswer) {
+            _showBackIncorrectItems(userWrongAnswerWord) {
                 // отобразить на тыльной стороне только элементы НЕправильного ответа
                 this.correctAnswerElems.forEach(elem => elem.style.display = 'none')
                 this.incorrectAnswerElems.forEach(elem => elem.style.display = 'inline-block')
 
-                this._drawUserWrondAnswer(userWrongAnswer)
+                this._drawUserWrondAnswer(userWrongAnswerWord)
             }
             _drawUserWrondAnswer(word) {
                 // отобразить перевод слова выбраного пользователем (неправильный ответ)
@@ -294,10 +315,11 @@
                 this.wrongAnswerBlock.innerText = text
             }
 
-            drawCard(target, answers) {
+            drawCard(card) {
                 // отрисовать карточку
-                this._drawTargetWord(target)
-                this._drawAnswerButtons(answers)
+                this._drawTargetWord(card.target)
+                this._drawAnswerButtons(card.answersList)
+                this._drawNumberInDict(card.target)
             }
 
             _drawTargetWord(word) {
@@ -313,6 +335,9 @@
                 answers.forEach(word => {
                     this._drawAnswerBtn(word)
                 })
+            }
+            _drawNumberInDict(target) {
+                this.cardHeader.innerText = '#' + target['number_in_dict']
             }
 
             _drawAnswerBtn(word) {
@@ -335,14 +360,11 @@
             }
         }
 
-        
+
 
         class CardTrainer {
             constructor() {
-                this.target = null
-                this.answers = {}
-                this.answeersList = null
-                this.userAnswer = null
+                this.card = null
                 this._init()
             }
 
@@ -353,51 +375,43 @@
 
             getCard(draw) {
                 // получить новую карточку с сервера
-                cards.loadCard().then(card => {
+                cardsApi.loadCard().then(card => {
                     if (card != undefined) {
-                        this.target = card['target']
-                        this.answeersList = card['answers']
-                        this.answeersList.forEach(word => {
-                            this.answers[word['id']] = word
-                        })
+                        this.card = card
                         if (draw) {
-                            this.drawCard()
+                            this._drawCard()
                         }
                     }
-
                 })
             }
-            drawCard() {
+            _drawCard() {
                 // отрисовать данные карточки в хтмл карты
-                cardView.drawCard(this.target, this.answeersList)
+                cardView.drawCard(this.card)
             }
 
 
             proccesUserAnswer(wordId) {
-                // обработка ответа от пользователя (выбор перевода слова)
-                this.userAnswer = this.answers[wordId]
-                console.log(this.userAnswer['id'], this.target['id'])
-                if (this.userAnswer['id'] == this.target['id']) {
-                    console.log('COrrect')
+                if (this.card.isAnwerCorrect(wordId)) {
+                    console.info('Correct')
                     cardView._showBackCorectItems()
                 } else {
                     console.warn('Incorrect answer')
-                    cardView._showBackIncorrectItems(this.userAnswer)
+                    var userWord = this.card.getWordById(wordId)
+                    cardView._showBackIncorrectItems(userWord)
                 }
                 cardView.showBack()
                 this.getCard()
             }
 
             nextCard() {
-                // взять и отобразить следующую карточку
-                cardView.nextCard(this.target, this.answeersList)
-                // this.getCard()
+                // отобразить следующую карточку
+                cardView.showNextCard(this.card)
             }
         }
 
-        const cards = new Cards()
-        const cardView = new CardView('word-card')
-        var cardTrainer = new CardTrainer()
+        const cardsApi = new CardsApi()
+        const cardView = new CardView()
+        const cardTrainer = new CardTrainer()
 
     </script>
 </body>
