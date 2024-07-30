@@ -168,7 +168,7 @@
 
             }
         }
-        const cards = new Cards()
+        
 
         class CardView {
             static FLIP_TRANSITION = '1s'
@@ -225,12 +225,7 @@
                 this.flipTransition = CardView.FLIP_TRANSITION
 
             }
-            nextCard() {
-                $(card.elem,).slideUp(() => {
-                    this.showFront(false)
-                }).slideDown()
 
-            }
             flip() {
                 if (this._is_front) {
                     this.showBack()
@@ -240,8 +235,8 @@
             }
 
             nextCard(target, answers){
+                // отривосать следующую карту
                 $(this.cardWrapElem).slideUp(() =>{
-                    console.log(target, answers)
                     this.drawCard(target, answers)
                     this.showFront(true)
                 }).slideDown()
@@ -294,23 +289,26 @@
                 this._drawUserWrondAnswer(userWrongAnswer)
             }
             _drawUserWrondAnswer(word) {
+                // отобразить перевод слова выбраного пользователем (неправильный ответ)
                 var text = `${word['translate']} - ${word['word']}`
                 this.wrongAnswerBlock.innerText = text
             }
 
             drawCard(target, answers) {
+                // отрисовать карточку
                 this._drawTargetWord(target)
                 this._drawAnswerButtons(answers)
             }
 
             _drawTargetWord(word) {
+                // отрисовать переводимое слово
                 this.wordElem.innerText = word['word']
                 var text = `${word['translate']} - ${word['word']}`
                 this.wordTranslateElem.innerText = text
             }
 
             _drawAnswerButtons(answers) {
-                console.log(answers, 'xxxx')
+                // отрисовать кнопки с ответами перевода
                 this.asnwerBlock.innerHTML = ''
                 answers.forEach(word => {
                     this._drawAnswerBtn(word)
@@ -318,6 +316,7 @@
             }
 
             _drawAnswerBtn(word) {
+                //  отрисовка кнопку с вариантами ответа перевода
                 var btn = document.createElement('button')
                 btn.innerText = word['translate']
                 btn.classList.add('btn', 'btn-outline-primary', 'answer-option')
@@ -329,13 +328,14 @@
             }
 
             _answerBtnClickEvent(e) {
+                // клик по кнопке с ответом перевода
                 var btn = e.target
                 var userWordId = btn.dataset.wordId
                 cardTrainer.proccesUserAnswer(userWordId)
             }
         }
 
-        const cardView = new CardView('word-card')
+        
 
         class CardTrainer {
             constructor() {
@@ -352,10 +352,9 @@
 
 
             getCard(draw) {
+                // получить новую карточку с сервера
                 cards.loadCard().then(card => {
-                    console.log(card)
                     if (card != undefined) {
-                        console.log(123)
                         this.target = card['target']
                         this.answeersList = card['answers']
                         this.answeersList.forEach(word => {
@@ -369,13 +368,15 @@
                 })
             }
             drawCard() {
+                // отрисовать данные карточки в хтмл карты
                 cardView.drawCard(this.target, this.answeersList)
             }
 
 
             proccesUserAnswer(wordId) {
-
+                // обработка ответа от пользователя (выбор перевода слова)
                 this.userAnswer = this.answers[wordId]
+                console.log(this.userAnswer['id'], this.target['id'])
                 if (this.userAnswer['id'] == this.target['id']) {
                     console.log('COrrect')
                     cardView._showBackCorectItems()
@@ -388,13 +389,15 @@
             }
 
             nextCard() {
+                // взять и отобразить следующую карточку
                 cardView.nextCard(this.target, this.answeersList)
-                this.getCard()
+                // this.getCard()
             }
         }
+
+        const cards = new Cards()
+        const cardView = new CardView('word-card')
         var cardTrainer = new CardTrainer()
-
-
 
     </script>
 </body>
