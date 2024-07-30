@@ -8,6 +8,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <!--ICONS-->
     <script src="https://kit.fontawesome.com/0960a95ef5.js" crossorigin="anonymous"></script>
@@ -104,7 +108,8 @@
                         </div>
                         <div class="card-body">
                             <h5 id="word-translate">Front - Лицевая сторона</h5>
-                            <p id="wrong-answer-translate" class="incorrect-answer"><b>Wrong</b> - Неправильный ответ</p>
+                            <p id="wrong-answer-translate" class="incorrect-answer"><b>Wrong</b> - Неправильный ответ
+                            </p>
                             <a id="next-card" href="#" class="btn btn-primary" id="next-word"><i class="fas fa-forward"
                                     aria-hidden="true"></i></a>
                         </div>
@@ -119,6 +124,27 @@
 
         </div>
     </div>
+
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <div id="errorToast" class="toast align-items-center text-white bg-danger border-0" role="alert"
+            aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    Hello, world! This is a toast message.
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+    <script>
+        var myToastEl = document.getElementById('errorToast')
+        var myToast = bootstrap.Toast.getOrCreateInstance(myToastEl)
+        function showError(text) {
+            myToastEl.querySelector('.toast-body').innerText = text
+            myToast.show()
+        }
+    </script>
     <script>
 
         class Cards {
@@ -135,8 +161,9 @@
                     // console.log(json);
                     return json
                 } catch (error) {
-                    // console.error(error.message);
-                    return error
+                    console.error(error.message);
+                    showError('Card not loaded: ' + error.message)
+                    return undefined
                 }
 
             }
@@ -209,6 +236,14 @@
                 }
             }
 
+            slideUp(callback) {
+                $(this.cardWrapElem).slideUp(callback)
+            }
+
+            slideDown(callback) {
+                $(this.cardWrapElem).slideDown(callback)
+            }
+
             showBack(quick = true) {
                 this._showSide('back', quick)
             }
@@ -248,11 +283,11 @@
                 // отобразить на тыльной стороне только элементы НЕправильного ответа
                 this.correctAnswerElems.forEach(elem => elem.style.display = 'none')
                 this.incorrectAnswerElems.forEach(elem => elem.style.display = 'inline-block')
-                
+
                 this._drawUserWrondAnswer(userWrongAnswer)
             }
-            _drawUserWrondAnswer(word){
-                var text = `${word['word']} - ${word['translate']}`
+            _drawUserWrondAnswer(word) {
+                var text = `${word['translate']} - ${word['word']}`
                 this.wrongAnswerBlock.innerText = text
             }
 
@@ -263,7 +298,7 @@
 
             _drawTargetWord(word) {
                 this.wordElem.innerText = word['word']
-                var text = `${word['word']} - ${word['translate']}`
+                var text = `${word['translate']} - ${word['word']}`
                 this.wordTranslateElem.innerText = text
             }
 
@@ -281,11 +316,11 @@
                 btn.dataset.wordId = word['id']
                 btn.setAttribute('type', 'bytton')
                 this.asnwerBlock.appendChild(btn)
-                
+
                 btn.addEventListener('click', this._answerBtnClickEvent)
             }
 
-            _answerBtnClickEvent(e){
+            _answerBtnClickEvent(e) {
                 var btn = e.target
                 var userWordId = btn.dataset.wordId
                 cardTrainer.proccesUserAnswer(userWordId)
@@ -303,7 +338,7 @@
                 this._init()
             }
 
-            _init(){
+            _init() {
                 this.getCard(true)
             }
 
@@ -311,27 +346,29 @@
             getCard(draw) {
                 cards.loadCard().then(card => {
                     console.log(card)
-                    this.target = card['target']
-                    this.answeersList = card['answers']
-                    this.answeersList.forEach(word => {
-                        this.answers[word['id']] = word
-                    })
-                    if (draw){
-                        this.drawCard()
+                    if (card != undefined) {
+                        console.log(123)
+                        this.target = card['target']
+                        this.answeersList = card['answers']
+                        this.answeersList.forEach(word => {
+                            this.answers[word['id']] = word
+                        })
+                        if (draw) {
+                            this.drawCard()
+                        }
                     }
-                }).catch(error => {
-                    console.error(error)
+
                 })
             }
-            drawCard(){
+            drawCard() {
                 cardView._drawCard(this.target, this.answeersList)
             }
 
 
-            proccesUserAnswer(wordId){
-                
+            proccesUserAnswer(wordId) {
+
                 this.userAnswer = this.answers[wordId]
-                if (this.userAnswer['id'] == this.target['id']){
+                if (this.userAnswer['id'] == this.target['id']) {
                     console.log('COrrect')
                     cardView._showBackCorectItems()
                 } else {
@@ -339,10 +376,22 @@
                     cardView._showBackIncorrectItems(this.userAnswer)
                 }
                 cardView.showBack()
+                this.getCard()
+            }
+
+            nextCard() {
+                cardView.slideUp(() => {
+                    console.log('AFTER')
+                    this.drawCard()
+                    cardView.showFront(true)
+                    cardView.slideDown()
+                })
+                
+                
             }
         }
         var cardTrainer = new CardTrainer()
-        
+
 
 
     </script>
