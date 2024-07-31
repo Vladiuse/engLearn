@@ -6,10 +6,10 @@ from words.models import Word
 
 class UserWord(models.Model):
     LEARNED = 'learned'
-    NOT_LEARNED = 'not_learned'
+    LEARNING = 'learning'
     STATUSES = (
         (LEARNED,'Выучено'),
-        (NOT_LEARNED,'Не выучено'),
+        (LEARNING,'Изучаю'),
 
     )
     word = models.ForeignKey(
@@ -23,7 +23,7 @@ class UserWord(models.Model):
     status = models.CharField(
         max_length=12,
         choices=STATUSES,
-        default=NOT_LEARNED,
+        default=LEARNING,
     )
     wrong_answer_count = models.PositiveIntegerField(
         blank=True,
