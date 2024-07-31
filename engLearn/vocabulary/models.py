@@ -33,3 +33,6 @@ class UserWord(models.Model):
         blank=True,
         default=0,
     )
+
+    class Meta:
+        unique_together = ('owner', 'word')
