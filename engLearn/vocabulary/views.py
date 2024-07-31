@@ -6,6 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from rest_framework.response import Response
 from django.views.generic import ListView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class UserWordView(ModelViewSet):
@@ -17,6 +18,16 @@ class UserWordView(ModelViewSet):
         serializer.save(owner=self.request.user)
 
 
-class UserVocabularyView(ListView):
-    queryset = UserWord.objects.all()
-    template_name = 'auth/some.html'
+class UserVocabularyView(LoginRequiredMixin,ListView):
+
+    template_name = 'vocabulary/user_vocabulary.html'
+
+    def get_queryset(self):
+        return UserWord.objects.filter(owner=self.request.user)
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data( object_list=None, **kwargs)
+        paginator = context['paginator']
+        current_page = context['page_obj'].number
+        context['paginator_pages'] = paginator.get_elided_page_range(current_page, on_each_side=2, on_ends=1, )
+        return context

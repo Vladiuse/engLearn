@@ -1,20 +1,45 @@
 {%extends 'base.html'%}
 {%block content%}
-<form method="POST" accept="{%url 'login'%}">
-  {{ form.non_field_errors }}
-  <div class="mb-3">
-    {%csrf_token%}
-    <label for="exampleInputEmail1" class="form-label">Login</label>
-    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-    {form.login.errors}
-  </div>
-  <div class="mb-3">
-    <label for="exampleInputPassword1" class="form-label">Password</label>
-    <input type="password" class="form-control" id="exampleInputPassword1">
-    {form.login.password}
-  </div>
 
-  <button type="submit" class="btn btn-primary">Submit</button>
-    <a href="{%url 'sign_up' %}" class="link-primary">Нет аккаунта? Зарегестрируйтесь</a>
-</form>
+<style>
+  .login-form-wrap{
+    display: flex;
+    justify-content: center;
+    padding: 30px 0;
+  }
+  .login-form-wrap form{
+    width: 400px;
+  }
+  .login-form-wrap form button[type=submit]{
+    width: 100%;
+  }
+  #registry{
+    display: flex;
+    justify-content: center;
+    padding: 15px 0;
+  }
+</style>
+<div class="login-form-wrap">
+  <form method="POST" action="{%url 'login'%}">
+    {%csrf_token%}
+    {{ form.non_field_errors }}
+    <div class="mb-3">
+      {%csrf_token%}
+      <label for="exampleInputEmail1" class="form-label">Login</label>
+      <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required name="username">
+    {{form.username.errors}}
+    </div>
+    <div class="mb-3">
+      <label for="exampleInputPassword1" class="form-label">Password</label>
+      <input type="password" class="form-control" id="exampleInputPassword1" required name="password">
+      {{form.password.errors}}
+    </div>
+  
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <div class="" id="registry">
+      <a href="{%url 'sign_up' %}" class="link-primary">Нет аккаунта? Зарегестрируйтесь</a>
+    </div>
+  </form>
+  
+</div>
 {%endblock%}

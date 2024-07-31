@@ -21,8 +21,8 @@
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">EngLearn</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav2, #navbarNav"
+        aria-controls="navbarNav2,navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
@@ -58,7 +58,7 @@
           
         </ul>
       </div>
-      <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarNav">
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav2">
         <ul class="navbar-nav ">
           {% if user.is_authenticated%}
           <li class="nav-item dropdown">
@@ -70,7 +70,12 @@
               <li><a class="dropdown-item" href="#">Кабинет Пользователя</a></li>
               <li><a class="dropdown-item" href="#">Настройки</a></li>
               <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#">Выйти</a></li>
+              <li>
+                <form action="{%url 'logout'%}" method="POST">
+                  {%csrf_token%}
+                  <button class="dropdown-item" href="#" type="submit">Выйти</button>
+                </form>
+              </li>
 
             </ul>
           </li>
