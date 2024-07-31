@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import UserWord
 from rest_framework.validators import UniqueTogetherValidator
+from django.views.generic import ListView
 
 class UserWordSerializer(serializers.ModelSerializer):
 
@@ -19,3 +20,8 @@ class UserWordSerializer(serializers.ModelSerializer):
                 fields=['owner', 'word']
             )
         ]
+
+
+class UserVocabularyView(ListView):
+
+    template_name = 'vocabulary/user_vocabulary.html'

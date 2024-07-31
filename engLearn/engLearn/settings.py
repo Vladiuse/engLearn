@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'words.apps.WordsConfig',
     'trainer.apps.TrainerConfig',
     'vocabulary.apps.VocabularyConfig',
+    'users.apps.UsersConfig',
 
     'django_extensions',
     'rest_framework',
@@ -87,7 +88,7 @@ ROOT_URLCONF = 'engLearn.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
