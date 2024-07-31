@@ -4,9 +4,9 @@ from . import views
 
 app_name = 'vocabulary'
 router = DefaultRouter()
-router.register('', views.UserWordView, basename='user_word')
+router.register('', views.UserWordView, basename='userword')
 
 urlpatterns = [
     path('', views.UserVocabularyView.as_view(),name='user_vocabulary'),
-    path('', include(router.urls),),
+    path('api/', include(router.urls),),
 ]
