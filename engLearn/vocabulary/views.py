@@ -33,8 +33,6 @@ class UserVocabularyView(LoginRequiredMixin,ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data( object_list=object_list, **kwargs)
-        print(context)
-        print('**************')
         paginator = context['paginator']
         current_page = context['page_obj'].number
         context['paginator_pages'] = paginator.get_elided_page_range(current_page, on_each_side=2, on_ends=1, )
