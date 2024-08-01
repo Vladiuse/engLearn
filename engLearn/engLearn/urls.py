@@ -25,7 +25,7 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('sign_up/', user_view.RegisterView.as_view(), name='sign_up'),
     path('admin/', admin.site.urls),
-    path('', include('trainer.urls')),
+    path('trainer/', include('trainer.urls')),
     path('words/', include('words.urls')),
     path('vocabulary/', include('vocabulary.urls')),
 ] + debug_toolbar_urls()

@@ -12,14 +12,8 @@ from rest_framework.serializers import Serializer
 from rest_framework.viewsets import ModelViewSet
 
 
-def index(request):
-    return render(request, 'trainer/index.html')
-
-def trainer_cards(request):
-    content = {
-
-    }
-    return render(request, 'trainer/trainer_cards.html', content)
+def card_trainer(request):
+    return render(request, 'trainer/card_trainer.html')
 
 
 @api_view()
@@ -27,7 +21,7 @@ def get_card(request, format=None):
     serializer = TranslationDirectionSerializer(data=request.query_params)
     serializer.is_valid(raise_exception=True)
     lang_direction = serializer.save()
-    card = CardTrainer.get_card(lang_direction)
+    card = CardTrainer(request.user).get_card(lang_direction)
     card_serializer = CardSerializer(card)
     return Response(card_serializer.data)
 

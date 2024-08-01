@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from django.views.generic import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
+from rest_framework.decorators import action
 
 
 class UserWordView(ModelViewSet):
@@ -15,8 +16,11 @@ class UserWordView(ModelViewSet):
     serializer_class = UserWordSerializer
     permission_classes = [IsAuthenticated]
 
+    lookup_field = 'word'
+
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
+
 
 
 class UserVocabularyView(LoginRequiredMixin,ListView):

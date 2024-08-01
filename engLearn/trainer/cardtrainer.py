@@ -22,8 +22,8 @@ class CardTrainer:
         self.user = user
     
     def get_queryset(self):
-        if self.user.is_authenticated():
-            userwords_ids = UserWord.objects.filter(owner=self.user, status=UserWord.LEARNING)
+        if self.user.is_authenticated:
+            userwords_ids = UserWord.objects.filter(owner=self.user, status=UserWord.LEARNING).values('word')
             return Word.objects.filter(pk__in=userwords_ids)
         else:
             return Word.objects.filter(number_in_dict__range=CardTrainer.WORD_RANGE)
