@@ -1,6 +1,8 @@
 from words.models import Word, TranslationDirection
 from typing import List, Optional
 import random as r
+from django.contrib.auth.models import User
+from vocabulary.models import UserWord
 
 
 class Card:
@@ -16,12 +18,20 @@ class CardTrainer:
     ANSWERS_COUNT = TOTAL_ANSWERS_COUNT - 1
     WORD_RANGE = (1000, 2000)
 
-    qs = Word.objects.filter(number_in_dict__range=WORD_RANGE)
+    def __init__(self, user:User):
+        self.user = user
+    
+    def get_queryset(self):
+        if self.user.is_authenticated():
+            userwords_ids = UserWord.objects.filter(owner=self.user, status=UserWord.LEARNING)
+            return Word.objects.filter(pk__in=userwords_ids)
+        else:
+            return Word.objects.filter(number_in_dict__range=CardTrainer.WORD_RANGE)
 
-    @classmethod
-    def get_card(cls, lang_direction: TranslationDirection) -> Card:
-        word = cls._get_word()
-        answers = cls._get_answers(word=word)
+    
+    def get_card(self, lang_direction: TranslationDirection) -> Card:
+        word = self._get_word()
+        answers = self._get_answers(word=word)
         card = Card(
             target=word,
             answers=answers,
@@ -29,13 +39,14 @@ class CardTrainer:
         )
         return card
 
-    @classmethod
-    def _get_word(cls) -> Word:
-        return cls.qs.order_by('?').first()
+    
+    def _get_word(self) -> Word:
+        qs = self.get_queryset()
+        return qs.order_by('?').first()
 
-    @classmethod
-    def _get_answers(cls, word: Optional[Word]) -> List[Word]:
-        qs = cls.qs
+    
+    def _get_answers(self, word: Optional[Word]) -> List[Word]:
+        qs = self.get_queryset()
         if word:
             qs.exclude(pk=word.pk)
         qs = qs.order_by('?')[:CardTrainer.ANSWERS_COUNT]
