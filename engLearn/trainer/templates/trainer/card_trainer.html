@@ -46,420 +46,474 @@
     #next-card {
         width: 100px;
     }
-    .screen{
+
+    .screen {
         display: flex;
         margin-top: -56px;
         height: calc(100vh - 56px);
         align-items: center;
     }
 </style>
-    <div class="screen">
-        <div class="container ">
-            <div id="word-card" class="d-flex justify-content-center">
-                <div class="card-wraper">
-                    <div id="front">
-                        <div class="card text-center">
-                            <div class="card-header">
-                                #0
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title" id="word">Front</h5>
-                                <!-- <p class="card-text" id="sentence">With supporting text below as a natural lead-in to
+<div class="screen">
+    <div class="container ">
+        <div id="word-card" class="d-flex justify-content-center">
+            <div class="card-wraper">
+                <div id="front">
+                    <div class="card text-center">
+                        <div class="card-header">
+                            #0
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title" id="word">Front</h5>
+                            <!-- <p class="card-text" id="sentence">With supporting text below as a natural lead-in to
                                     additional content.
                                     With supporting text below as a natural lead-in to additional content.
                                     With supporting text below as a natural lead-in to additional content.
                                     With supporting text below as a natural lead-in to additional content.
                                 </p> -->
-                                <div id="answers">
-                                    <button type="button" class="btn btn-outline-primary answer-option">Word 1</button>
-                                    <button type="button" class="btn btn-outline-primary answer-option">Word 2</button>
-                                    <button type="button" class="btn btn-outline-primary answer-option">Word 3</button>
-                                    <button type="button" class="btn btn-outline-primary answer-option">Word 1</button>
-                                    <button type="button" class="btn btn-outline-primary answer-option">Word 2</button>
-                                    <button type="button" class="btn btn-outline-primary answer-option">Word 3</button>
-                                    <button type="button" class="btn btn-outline-primary answer-option">Word 2</button>
-                                    <button type="button" class="btn btn-outline-primary answer-option">Word 3</button>
-                                    <button type="button" class="btn btn-outline-primary answer-option">Word 1</button>
-                                    <button type="button" class="btn btn-outline-primary answer-option">Word 2</button>
-                                    <button type="button" class="btn btn-outline-primary answer-option">Word 3</button>
-                                </div>
-                            </div>
-                            <div class="card-footer text-muted">
-                                <button type="button" class="btn btn-outline-secondary">Не знаю</button>
-                                <button id="help-50" type="button" class="btn btn-outline-secondary">50 на 50</button>
+                            <div id="answers">
+                                <button type="button" class="btn btn-outline-primary answer-option">Word 1</button>
+                                <button type="button" class="btn btn-outline-primary answer-option">Word 2</button>
+                                <button type="button" class="btn btn-outline-primary answer-option">Word 3</button>
+                                <button type="button" class="btn btn-outline-primary answer-option">Word 1</button>
+                                <button type="button" class="btn btn-outline-primary answer-option">Word 2</button>
+                                <button type="button" class="btn btn-outline-primary answer-option">Word 3</button>
+                                <button type="button" class="btn btn-outline-primary answer-option">Word 2</button>
+                                <button type="button" class="btn btn-outline-primary answer-option">Word 3</button>
+                                <button type="button" class="btn btn-outline-primary answer-option">Word 1</button>
+                                <button type="button" class="btn btn-outline-primary answer-option">Word 2</button>
+                                <button type="button" class="btn btn-outline-primary answer-option">Word 3</button>
                             </div>
                         </div>
-                    </div>
-                    <div id="back">
-                        <div class="card text-center">
-                            <div class="card-header">
-                                <b style="color:#148014" class="correct-answer">Верно</b>
-                                <b style="color: #c62424" class="incorrect-answer">Неверно</b>
-                            </div>
-                            <div class="card-body">
-                                <h5 id="word-translate">Front - Лицевая сторона</h5>
-                                <p id="wrong-answer-translate" class="incorrect-answer"><b>Wrong</b> - Неправильный ответ
-                                </p>
-                                <a id="next-card" href="#" class="btn btn-primary" id="next-word"><i class="fas fa-forward"
-                                        aria-hidden="true"></i></a>
-                            </div>
-                            <div class="card-footer text-muted">
-                                <!-- <button type="button" class="btn btn-outline-secondary">Не показывать</button> -->
-                                <button id="learn-word"type="button" class="btn btn-outline-success correct-answer">Изучил</button>
-                            </div>
+                        <div class="card-footer text-muted">
+                            <button type="button" class="btn btn-outline-secondary">Не знаю</button>
+                            <button id="help-50" type="button" class="btn btn-outline-secondary">50 на 50</button>
                         </div>
                     </div>
                 </div>
-    
-    
-            </div>
-        </div>
-    </div>
-    
-
-    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
-        <div id="errorToast" class="toast align-items-center text-white bg-danger border-0" role="alert"
-            aria-live="assertive" aria-atomic="true">
-            <div class="d-flex">
-                <div class="toast-body">
-                    Hello, world! This is a toast message.
+                <div id="back">
+                    <div class="card text-center">
+                        <div class="card-header">
+                            <b style="color:#148014" class="correct-answer">Верно</b>
+                            <b style="color: #c62424" class="incorrect-answer">Неверно</b>
+                        </div>
+                        <div class="card-body">
+                            <h5 id="word-translate">Front - Лицевая сторона</h5>
+                            <p id="wrong-answer-translate" class="incorrect-answer"><b>Wrong</b> - Неправильный ответ
+                            </p>
+                            <a id="next-card" href="#" class="btn btn-primary" id="next-word"><i class="fas fa-forward"
+                                    aria-hidden="true"></i></a>
+                        </div>
+                        <div class="card-footer text-muted">
+                            <!-- <button type="button" class="btn btn-outline-secondary">Не показывать</button> -->
+                            <button id="learn-word" type="button"
+                                class="btn btn-outline-success correct-answer">Изучил</button>
+                        </div>
+                    </div>
                 </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
-                    aria-label="Close"></button>
             </div>
+
+
         </div>
     </div>
-    <script>
-        var myToastEl = document.getElementById('errorToast')
-        var myToast = bootstrap.Toast.getOrCreateInstance(myToastEl)
-        function showError(text) {
-            myToastEl.querySelector('.toast-body').innerText = text
-            myToast.show()
+</div>
+
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="errorToast" class="toast align-items-center text-white bg-danger border-0" role="alert"
+        aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                Hello, world! This is a toast message.
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+<script>
+    var myToastEl = document.getElementById('errorToast')
+    var myToast = bootstrap.Toast.getOrCreateInstance(myToastEl)
+    function showError(text) {
+        myToastEl.querySelector('.toast-body').innerText = text
+        myToast.show()
+    }
+</script>
+<script>
+    function getRandomElementsFromArray(arr, num) {
+        if (num == undefined) {
+            console.error('Incorrect random elems count')
+        } else if (num < 0) {
+            console.error('Num must be positive')
+        } else if (num > arr.length) {
+            console.error('Num must be less than array lenn')
         }
-    </script>
-    <script>
-        const LEARNED = 'learned'
-        var csrf = '{{csrf_token}}'
-        // {%if user.is_is_authenticated %}
-        var isUserAuth = true
-        // {%else%}
-        var isUserAuth = false
-        // {%endif%}
+        let result = [];
+        let tempArr = [...arr]; // Копируем исходный массив, чтобы не изменять его
+        for (let i = 0; i < num; i++) {
+            let randomIndex = Math.floor(Math.random() * tempArr.length);
+            result.push(tempArr[randomIndex]);
+            tempArr.splice(randomIndex, 1); // Удаляем выбранный элемент из временного массива
+        }
+        return result;
+    }
+</script>
+<script>
+    const LEARNED = 'learned'
+    var csrf = '{{csrf_token}}'
+    // {%if user.is_is_authenticated %}
+    var isUserAuth = true
+    // {%else%}
+    var isUserAuth = false
+    // {%endif%}
 
-        class CardsApi {
+    class CardsApi {
 
-            async loadCard() {
-                var url = "http://127.0.0.1:8000{%url 'trainer:get_card'%}?direction=en-ru"
-                try {
-                    const response = await fetch(url);
-                    if (!response.ok) {
-                        throw new Error(`Response status: ${response.status}`);
-                    }
-
-                    const json = await response.json();
-                    // console.log(json);
-                    return new Card(json)
-                } catch (error) {
-                    console.error(error);
-                    console.error(error.message);
-                    showError('Card not loaded: ' + error.message)
-                    return undefined
+        async loadCard() {
+            var url = "http://127.0.0.1:8000{%url 'trainer:get_card'%}?direction=en-ru"
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`Response status: ${response.status}`);
                 }
 
+                const json = await response.json();
+                return new Card(json)
+            } catch (error) {
+                console.error(error);
+                console.error(error.message);
+                showError('Card not loaded: ' + error.message)
+                return undefined
             }
-            async changeWordStatus(wordId, status) {
-                var url = `http://127.0.0.1:8000/vocabulary/api/${wordId}/`
-                var headers = {
-                    "Content-Type": "application/json",
-                    "X-CSRFToken": csrf,
-                }
-                var data = {
-                    'status': status,
-                }
-                try {
-                    const response = await fetch(url, {
-                        headers: headers,
-                        method: "PATCH",
-                        body: JSON.stringify(data),
-                    });
-                    if (!response.ok) {
-                        throw new Error(`Response status: ${response.status}`);
-                    }
 
-                    const json = await response.json();
-                    // console.log(json);
-                    return json
-                } catch (error) {
-                    console.error(error.message);
-                    showError('Card not loaded: ' + error.message)
-                    return undefined
+        }
+        async changeWordStatus(wordId, status) {
+            var url = `http://127.0.0.1:8000/vocabulary/api/${wordId}/`
+            var headers = {
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrf,
+            }
+            var data = {
+                'status': status,
+            }
+            try {
+                const response = await fetch(url, {
+                    headers: headers,
+                    method: "PATCH",
+                    body: JSON.stringify(data),
+                });
+                if (!response.ok) {
+                    throw new Error(`Response status: ${response.status}`);
                 }
 
+                const json = await response.json();
+                return json
+            } catch (error) {
+                console.error(error.message);
+                showError('Card not loaded: ' + error.message)
+                return undefined
             }
 
         }
 
-        class Card {
-            constructor(cardData) {
-                this.target = cardData['target']
-                this.answersList = cardData['answers']
-                this.lang_direction = cardData['lang_direction']['direction']
-                this._answers = {}
+    }
 
-                this._init()
-            }
+    class Card {
+        constructor(cardData) {
+            this.target = cardData['target']
+            this.answersList = cardData['answers']
+            this.lang_direction = cardData['lang_direction']['direction']
+            this._answers = {}
 
-            _init() {
-                this.answersList.forEach(word => {
-                    this._answers[word['id']] = word
-                })
-            }
+            this._init()
+        }
 
-            getWordById(wordId) {
-                return this._answers[wordId]
-            }
+        get answerdCount() {
+            return this.answersList.length
+        }
 
-            isAnwerCorrect(wordId) {
-                return wordId == this.target['id']
-            }
+        get answersIds() {
+            return Object.keys(this._answers)
+        }
+
+        get incorrectAnswerdIds(){
+            var result = []
+            this.answersIds.forEach(id => {
+                if (id != this.target['id']){
+                    result.push(id)
+                }
+            })
+            return result
+        }
+
+        _init() {
+            this.answersList.forEach(word => {
+                this._answers[word['id']] = word
+            })
+        }
+
+        getWordById(wordId) {
+            return this._answers[wordId]
+        }
+
+        isAnwerCorrect(wordId) {
+            return wordId == this.target['id']
+        }
+    }
+
+
+    class CardView {
+        static FLIP_TRANSITION = '1s'
+
+        constructor() {
+            this.elem = document.getElementById('word-card')
+            this.cardHeader = this.elem.querySelector('.card-header')
+            this.cardWrapElem = this.elem.querySelector('.card-wraper')
+            this.back = document.getElementById('back')
+            this.front = document.getElementById('front')
+            this.nextCardBtn = document.getElementById('next-card')
+            this.sentenceBlock = document.getElementById('sentence')
+            this.wrongAnswerBlock = document.getElementById('wrong-answer-translate')
+            this.correctAnswerElems = this.elem.querySelectorAll('.correct-answer')
+            this.incorrectAnswerElems = this.elem.querySelectorAll('.incorrect-answer')
+            this.wordElem = document.getElementById('word')
+            this.wordTranslateElem = document.getElementById('word-translate')
+            this.asnwerBlock = document.getElementById('answers')
+            this.learnWordBtn = document.getElementById('learn-word')
+            this.help50Btn = document.getElementById('help-50')
+
+            this._is_front = true;
+
+            this._init()
+
+        }
+
+        get frontHeight() {
+            // высота блока фронтальной части карточки
+            return this.front.offsetHeight
+        }
+        get backHeight() {
+            // высота блока тыльной части карточки 
+            return this.back.offsetHeight
+        }
+
+        set flipTransition(time) {
+            this.back.style.transition = time
+            this.front.style.transition = time
         }
 
 
-        class CardView {
-            static FLIP_TRANSITION = '1s'
+        _init() {
+            // Код инициализации
 
-            constructor() {
-                this.elem = document.getElementById('word-card')
-                this.cardHeader = this.elem.querySelector('.card-header')
-                this.cardWrapElem = this.elem.querySelector('.card-wraper')
-                this.back = document.getElementById('back')
-                this.front = document.getElementById('front')
-                this.nextCardBtn = document.getElementById('next-card')
-                this.sentenceBlock = document.getElementById('sentence')
-                this.wrongAnswerBlock = document.getElementById('wrong-answer-translate')
-                this.correctAnswerElems = this.elem.querySelectorAll('.correct-answer')
-                this.incorrectAnswerElems = this.elem.querySelectorAll('.incorrect-answer')
-                this.wordElem = document.getElementById('word')
-                this.wordTranslateElem = document.getElementById('word-translate')
-                this.asnwerBlock = document.getElementById('answers')
-                this.learnWordBtn = document.getElementById('learn-word')
-                this.help50Btn = document.getElementById('help-50')
+            // Обьявление событий
 
-                this._is_front = true;
+            // евент при клике на кнопку - следующая карточка
+            this.nextCardBtn.addEventListener('click', () => {
+                cardTrainer.nextCard()
+            })
+            // установка враперу карты нужной высоты
+            this.cardWrapElem.style.height = this.frontHeight + 'px'
+            // установка времени врадения карточки
+            this.flipTransition = CardView.FLIP_TRANSITION
 
-                this._init()
+            this.learnWordBtn.addEventListener('click', () => {
+                cardTrainer.setWordLearn()
+            })
+            this.help50Btn.addEventListener('click', () => {
+                cardTrainer.help50()
+            })
+        }
 
+        flip() {
+            if (this._is_front) {
+                this.showBack()
+            } else {
+                this.showFront()
             }
+        }
 
-            get frontHeight() {
-                // высота блока фронтальной части карточки
-                return this.front.offsetHeight
-            }
-            get backHeight() {
-                // высота блока тыльной части карточки 
-                return this.back.offsetHeight
-            }
+        showNextCard(card) {
+            // отривосать следующую карту
+            $(this.cardWrapElem).slideUp(() => {
+                this.drawCard(card)
+                this.showFront(true)
+            }).slideDown()
+        }
 
-            set flipTransition(time) {
-                this.back.style.transition = time
-                this.front.style.transition = time
-            }
+        showBack(quick = true) {
+            this._showSide('back', quick)
+        }
+        showFront(quick = true) {
+            this._showSide('front', quick)
+            cardView.help50Btn.style.display = 'inline-block'
+        }
 
-
-            _init() {
-                // Код инициализации
-
-                // Обьявление событий
-
-                // евент при клике на кнопку - следующая карточка
-                this.nextCardBtn.addEventListener('click', () => {
-                    cardTrainer.nextCard()
-                })
-                // установка враперу карты нужной высоты
-                this.cardWrapElem.style.height = this.frontHeight + 'px'
-                // установка времени врадения карточки
+        _showSide(side, quick) {
+            if (quick) {
                 this.flipTransition = CardView.FLIP_TRANSITION
-
-                this.learnWordBtn.addEventListener('click', () => {
-                    cardTrainer.setWordLearn()
-                })
+            } else {
+                this.flipTransition = '0s'
+            }
+            if (side == 'front') {
+                $(this.front).css("transform", "rotateY(0deg)");
+                $(this.back).css("transform", "rotateY(180deg)");
+                this._is_front = true;
+            } else if (side == 'back') {
+                $(this.front).css("transform", "rotateY(180deg)");
+                $(this.back).css("transform", "rotateY(0deg)");
+                this._is_front = false;
+            } else {
+                console.error('Incorrect side')
             }
 
-            flip() {
-                if (this._is_front) {
-                    this.showBack()
-                } else {
-                    this.showFront()
-                }
-            }
-
-            showNextCard(card) {
-                // отривосать следующую карту
-                $(this.cardWrapElem).slideUp(() => {
-                    this.drawCard(card)
-                    this.showFront(true)
-                }).slideDown()
-            }
-
-            showBack(quick = true) {
-                this._showSide('back', quick)
-            }
-            showFront(quick = true) {
-                this._showSide('front', quick)
-            }
-
-            _showSide(side, quick) {
-                if (quick) {
-                    this.flipTransition = CardView.FLIP_TRANSITION
-                } else {
-                    this.flipTransition = '0s'
-                }
-                if (side == 'front') {
-                    $(this.front).css("transform", "rotateY(0deg)");
-                    $(this.back).css("transform", "rotateY(180deg)");
-                    // this.cardWrapElem.style.height = this.frontHeight + 'px'
-                    // console.log(this.frontHeight + 'px')
-                    this._is_front = true;
-                } else if (side == 'back') {
-                    $(this.front).css("transform", "rotateY(180deg)");
-                    $(this.back).css("transform", "rotateY(0deg)");
-                    // this.cardWrapElem.style.height = this.backHeight + 'px'
-                    // console.log(this.backHeight + 'px')
-                    this._is_front = false;
-                } else {
-                    console.error('Incorrect side')
-                }
-
-            }
-
-
-            _showBackCorectItems() {
-                // отобразить на тыльной стороне только элементы правильного ответа
-                this.correctAnswerElems.forEach(elem => elem.style.display = 'inline-block')
-                this.incorrectAnswerElems.forEach(elem => elem.style.display = 'none')
-            }
-            _showBackIncorrectItems(userWrongAnswerWord) {
-                // отобразить на тыльной стороне только элементы НЕправильного ответа
-                this.correctAnswerElems.forEach(elem => elem.style.display = 'none')
-                this.incorrectAnswerElems.forEach(elem => elem.style.display = 'inline-block')
-
-                this._drawUserWrondAnswer(userWrongAnswerWord)
-            }
-            _drawUserWrondAnswer(word) {
-                // отобразить перевод слова выбраного пользователем (неправильный ответ)
-                var text = `${word['translate']} - ${word['word']}`
-                this.wrongAnswerBlock.innerText = text
-            }
-
-            drawCard(card) {
-                // отрисовать карточку
-                this._drawTargetWord(card.target)
-                this._drawAnswerButtons(card.answersList)
-                this._drawNumberInDict(card.target)
-            }
-
-            _drawTargetWord(word) {
-                // отрисовать переводимое слово
-                this.wordElem.innerText = word['word']
-                var text = `${word['word']} - ${word['translate']}` 
-                console.log(text, 'text')
-                this.wordTranslateElem.innerText = text
-            }
-
-            _drawAnswerButtons(answers) {
-                // отрисовать кнопки с ответами перевода
-                this.asnwerBlock.innerHTML = ''
-                answers.forEach(word => {
-                    this._drawAnswerBtn(word)
-                })
-            }
-            _drawNumberInDict(target) {
-                this.cardHeader.innerText = '#' + target['number_in_dict']
-            }
-
-            _drawAnswerBtn(word) {
-                //  отрисовка кнопку с вариантами ответа перевода
-                var btn = document.createElement('button')
-                btn.innerText = word['translate']
-                btn.classList.add('btn', 'btn-outline-primary', 'answer-option')
-                btn.dataset.wordId = word['id']
-                btn.setAttribute('type', 'bytton')
-                this.asnwerBlock.appendChild(btn)
-
-                btn.addEventListener('click', this._answerBtnClickEvent)
-            }
-
-            _answerBtnClickEvent(e) {
-                // клик по кнопке с ответом перевода
-                var btn = e.target
-                var userWordId = btn.dataset.wordId
-                cardTrainer.proccesUserAnswer(userWordId)
-            }
         }
 
 
+        _showBackCorectItems() {
+            // отобразить на тыльной стороне только элементы правильного ответа
+            this.correctAnswerElems.forEach(elem => elem.style.display = 'inline-block')
+            this.incorrectAnswerElems.forEach(elem => elem.style.display = 'none')
+        }
+        _showBackIncorrectItems(userWrongAnswerWord) {
+            // отобразить на тыльной стороне только элементы НЕправильного ответа
+            this.correctAnswerElems.forEach(elem => elem.style.display = 'none')
+            this.incorrectAnswerElems.forEach(elem => elem.style.display = 'inline-block')
 
-        class CardTrainer {
-            constructor() {
-                this.card = null
-                this.nexCard = null
-                this._init()
-            }
+            this._drawUserWrondAnswer(userWrongAnswerWord)
+        }
+        _drawUserWrondAnswer(word) {
+            // отобразить перевод слова выбраного пользователем (неправильный ответ)
+            var text = `${word['translate']} - ${word['word']}`
+            this.wrongAnswerBlock.innerText = text
+        }
 
-            _init() {
-                this.getCard(true)
-            }
+        drawCard(card) {
+            // отрисовать карточку
+            this._drawTargetWord(card.target)
+            this._drawAnswerButtons(card.answersList)
+            this._drawNumberInDict(card.target)
+        }
+
+        _drawTargetWord(word) {
+            // отрисовать переводимое слово
+            this.wordElem.innerText = word['word']
+            var text = `${word['word']} - ${word['translate']}`
+            this.wordTranslateElem.innerText = text
+        }
+
+        _drawAnswerButtons(answers) {
+            // отрисовать кнопки с ответами перевода
+            this.asnwerBlock.innerHTML = ''
+            answers.forEach(word => {
+                this._drawAnswerBtn(word)
+            })
+        }
+        _drawNumberInDict(target) {
+            this.cardHeader.innerText = '#' + target['number_in_dict']
+        }
+
+        _drawAnswerBtn(word) {
+            //  отрисовка кнопку с вариантами ответа перевода
+            var btn = document.createElement('button')
+            btn.innerText = word['translate']
+            btn.classList.add('btn', 'btn-outline-primary', 'answer-option')
+            btn.dataset.wordId = word['id']
+            btn.setAttribute('type', 'bytton')
+            this.asnwerBlock.appendChild(btn)
+
+            btn.addEventListener('click', this._answerBtnClickEvent)
+        }
+
+        _answerBtnClickEvent(e) {
+            // клик по кнопке с ответом перевода
+            var btn = e.target
+            var userWordId = btn.dataset.wordId
+            cardTrainer.proccesUserAnswer(userWordId)
+        }
+
+        removeAnswersById(wordsIds) {
+            wordsIds.forEach(wordId => {
+                this.asnwerBlock.querySelector(`button[data-word-id="${wordId}"]`).remove()
+            })
+        }
+
+    }
 
 
-            getCard(draw) {
-                // получить новую карточку с сервера
-                cardsApi.loadCard().then(card => {
-                    if (card != undefined) {
-                        this.nexCard = card
 
-                        // при первой загрузке
-                        if (draw) {
-                            this.card = card
-                            this._drawCard()
-                        }
+    class CardTrainer {
+        constructor() {
+            this.card = null
+            this.nexCard = null
+            this._init()
+        }
+
+        _init() {
+            this.getCard(true)
+        }
+
+
+        getCard(draw) {
+            // получить новую карточку с сервера
+            cardsApi.loadCard().then(card => {
+                if (card != undefined) {
+                    this.nexCard = card
+
+                    // при первой загрузке
+                    if (draw) {
+                        this.card = card
+                        this._drawCard()
                     }
-                })
-            }
-            _drawCard() {
-                // отрисовать данные карточки в хтмл карты
-                cardView.drawCard(this.card)
-            }
-
-
-            proccesUserAnswer(wordId) {
-                if (this.card.isAnwerCorrect(wordId)) {
-                    console.info('Correct')
-                    cardView._showBackCorectItems()
-                } else {
-                    console.warn('Incorrect answer')
-                    var userWord = this.card.getWordById(wordId)
-                    cardView._showBackIncorrectItems(userWord)
                 }
-                cardView.showBack()
-                this.getCard()
-            }
-
-            nextCard() {
-                // отобразить следующую карточку
-                this.card = this.nexCard
-                this.nexCard = null
-                cardView.showNextCard(this.card)
-            }
-            setWordLearn(){
-                console.log('wordid', this.card.target['id'])
-                cardsApi.changeWordStatus(this.card.target['id'], LEARNED)
-                this.nextCard()
-            }
+            })
+        }
+        _drawCard() {
+            // отрисовать данные карточки в хтмл карты
+            cardView.drawCard(this.card)
         }
 
-        const cardsApi = new CardsApi()
-        const cardView = new CardView()
-        const cardTrainer = new CardTrainer()
 
-    </script>
+        proccesUserAnswer(wordId) {
+            // обработка ответа пользователя
+            if (this.card.isAnwerCorrect(wordId)) {
+                console.info('Correct')
+                cardView._showBackCorectItems()
+            } else {
+                console.warn('Incorrect answer')
+                var userWord = this.card.getWordById(wordId)
+                cardView._showBackIncorrectItems(userWord)
+            }
+            cardView.showBack()
+            this.getCard()
+        }
+
+        nextCard() {
+            // отобразить следующую карточку
+            this.card = this.nexCard
+            this.nexCard = null
+            cardView.showNextCard(this.card)
+        }
+        setWordLearn() {
+            // Пометить словао как изученое
+            cardsApi.changeWordStatus(this.card.target['id'], LEARNED)
+            this.nextCard()
+        }
+
+        help50() {
+            // Подсказка 50 на 50, останеться только 2 варианта ответа
+            var answersToRemoveCount = this.card.answerdCount - 2
+            if (answersToRemoveCount > 0) {
+                var idsToREmove = getRandomElementsFromArray(this.card.incorrectAnswerdIds, answersToRemoveCount)
+                cardView.removeAnswersById(idsToREmove)
+            }
+            cardView.help50Btn.style.display = 'none'
+        }
+    }
+
+    const cardsApi = new CardsApi()
+    const cardView = new CardView()
+    const cardTrainer = new CardTrainer()
+
+</script>
 {%endblock%}
