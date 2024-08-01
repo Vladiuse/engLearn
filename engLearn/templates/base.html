@@ -1,3 +1,4 @@
+{%load static%}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,6 +16,8 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <!--ICONS-->
   <script src="https://kit.fontawesome.com/0960a95ef5.js" crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="{%static 'trainer/css/styles.css'%}">
 </head>
 
 <body>
@@ -36,7 +39,7 @@
           </li>
           {%endif%}
           <li class="nav-item">
-            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+            <a class="nav-link" href="{%url 'trainer:card_trainer' %}" tabindex="-1" aria-disabled="true">Карточки</a>
           </li>          
         </ul>
       </div>

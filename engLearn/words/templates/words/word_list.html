@@ -76,11 +76,11 @@
 
 <script>
   var csrf = '{{csrf_token}}'
-  {%if user.is_is_authenticated %}
+  // {%if user.is_is_authenticated %}
   var isUserAuth = true
-  {%else%}
+  // {%else%}
   var isUserAuth = false
-  {%endif%}
+  // {%endif%}
   var userWordUrl = "{%url 'vocabulary:userword-list'%}"
   var wordsButtons = document.querySelectorAll('.word.can-be-add')
 

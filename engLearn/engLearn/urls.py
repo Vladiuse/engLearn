@@ -19,6 +19,9 @@ from django.urls import path, include
 from debug_toolbar.toolbar import debug_toolbar_urls
 from django.contrib.auth import views as auth_views
 from users import views as user_view
+from django.conf import settings
+from django.conf.urls.static import static
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
     path('login/', auth_views.LoginView.as_view(), name='login'),
@@ -29,3 +32,9 @@ urlpatterns = [
     path('words/', include('words.urls')),
     path('vocabulary/', include('vocabulary.urls')),
 ] + debug_toolbar_urls()
+
+# Serving the media files in development mode
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+else:
+    urlpatterns += staticfiles_urlpatterns()

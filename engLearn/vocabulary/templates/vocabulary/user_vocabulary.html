@@ -1,4 +1,7 @@
 {%extends 'base.html'%}
+{%load static%}
+{%block head%}
+{%endblock%}
 {%block content%}
 <style>
   .word-cloud{
@@ -13,10 +16,29 @@
     position: fixed;
     bottom: 10px;
   }
+  .empty{
+      width: 100%;
+      padding: 0 10%;
+      margin-top: 30px;
+  }
+
 </style>
+{%if not object_list|length%}
+<div id="screen">
+  <div class="container">
+      <div class="d-flex align-items-center flex-column">
+          <h2>В вашем словаре пока нет слов</h2>
+      <a href="{%url 'words:words_base'%}">Добавить слова</a>
+      </div>
+      <img class="empty" src="{%static 'vocabulary/img/empty_voc.jpg' %}" alt="">
+  </div>
+</div>
+{%else%}
+
 <div class="container">
     <h4>В словаре: {{object_list|length}} слов</h4>
 </div>
+
 <div class="container">
   <div class="word-cloud">
     {%for user_word in object_list%}
@@ -28,6 +50,7 @@
   {%endfor%}
   </div>
 </div>
+{%endif%}
 
 {%if paginator.num_pages > 1%}
 <nav aria-label="Page navigation example" id="navigation">

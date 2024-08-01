@@ -28,7 +28,6 @@ class CardTrainer:
         else:
             return Word.objects.filter(number_in_dict__range=CardTrainer.WORD_RANGE)
 
-    
     def get_card(self, lang_direction: TranslationDirection) -> Card:
         word = self._get_word()
         answers = self._get_answers(word=word)
