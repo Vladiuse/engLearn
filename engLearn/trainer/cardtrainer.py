@@ -14,8 +14,9 @@ class Card:
 
 
 class CardTrainer:
+    USER_VOC_REGIME = 'user-vocabulary'
     REGIMES = [
-        'user-vocabulary',
+        USER_VOC_REGIME,
         'A0',
         'A1',
         'A2',

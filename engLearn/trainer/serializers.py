@@ -19,6 +19,11 @@ class CreateCardSerializer(serializers.Serializer):
         )
         return card_trainer
 
+    def validate(self, data):
+        if data['regime'] == CardTrainer.USER_VOC_REGIME and not self.context['request'].user.is_authenticated:
+            raise ValidationError(f'Autorize to use {CardTrainer.USER_VOC_REGIME} regime')
+        return data
+
 
 class WordCardSerializer(serializers.ModelSerializer):
     ru = serializers.CharField(write_only=True)
