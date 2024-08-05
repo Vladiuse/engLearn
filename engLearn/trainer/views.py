@@ -1,7 +1,7 @@
 import random as r
 from django.shortcuts import render
 from rest_framework.decorators import api_view
-from .serializers import TranslationDirectionSerializer, CardSerializer
+from .serializers import CreateCardSerializer, CardSerializer
 from rest_framework.response import Response
 from words.models import Word, EnglishLevel
 from  words.serializers import WordSerializer
@@ -23,10 +23,10 @@ def card_trainer(request):
 
 @api_view()
 def get_card(request, format=None):
-    serializer = TranslationDirectionSerializer(data=request.query_params)
+    serializer = CreateCardSerializer(data=request.query_params, context={'request': request})
     serializer.is_valid(raise_exception=True)
-    lang_direction = serializer.save()
-    card = CardTrainer(request.user).get_card(lang_direction)
+    card_trainer = serializer.save()
+    card = card_trainer.get_card()
     card_serializer = CardSerializer(card)
     return Response(card_serializer.data)
 

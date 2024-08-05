@@ -14,12 +14,26 @@ class Card:
 
 
 class CardTrainer:
+    REGIMES = [
+        'user-vocabulary',
+        'A0',
+        'A1',
+        'A2',
+        'B1',
+        'B2',
+        'C1',
+        'C2',
+    ]
     TOTAL_ANSWERS_COUNT = 5
     ANSWERS_COUNT = TOTAL_ANSWERS_COUNT - 1
     WORD_RANGE = (1000, 2000)
 
-    def __init__(self, user: User):
+    def __init__(self, user: User, regime:str, lang_direction: TranslationDirection):
         self.user = user
+        self.regime = regime
+        self.lang_direction = lang_direction
+
+        print(regime, user)
 
     def get_queryset(self):
         if self.user.is_authenticated:
@@ -28,13 +42,13 @@ class CardTrainer:
         else:
             return Word.objects.filter(number_in_dict__range=CardTrainer.WORD_RANGE)
 
-    def get_card(self, lang_direction: TranslationDirection) -> Card:
+    def get_card(self) -> Card:
         word = self._get_word()
         answers = self._get_answers(word=word)
         card = Card(
             target=word,
             answers=answers,
-            lang_direction=lang_direction
+            lang_direction=self.lang_direction
         )
         return card
 

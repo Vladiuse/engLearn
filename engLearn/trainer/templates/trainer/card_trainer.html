@@ -348,8 +348,8 @@
 
     class CardsApi {
 
-        async loadCard() {
-            var url = "http://127.0.0.1:8000{%url 'trainer:get_card'%}?direction=en-ru"
+        async loadCard(regime) {
+            var url = `http://127.0.0.1:8000{%url 'trainer:get_card'%}?direction=en-ru&regime=${regime}`
             try {
                 const response = await fetch(url);
                 if (!response.ok) {
@@ -699,7 +699,7 @@
 
         getCard(draw) {
             // получить новую карточку с сервера
-            cardsApi.loadCard().then(card => {
+            cardsApi.loadCard(this.regime).then(card => {
                 if (card != undefined) {
                     this.nexCard = card
 
@@ -753,7 +753,7 @@
             this.cardView.help50Btn.style.display = 'none'
         }
     }
-    
+
     const cardsApi = new CardsApi()
     const cardTrainer = new CardTrainer()
 

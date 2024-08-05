@@ -1,14 +1,23 @@
 from rest_framework import serializers
 from rest_framework.validators import ValidationError
 from words.models import Word, TranslationDirection
-from .cardtrainer import Card
-
+from .cardtrainer import Card, CardTrainer
 
 class TranslationDirectionSerializer(serializers.Serializer):
     direction = serializers.ChoiceField(choices=TranslationDirection.AVAILABLE)
 
+class CreateCardSerializer(serializers.Serializer):
+    direction = serializers.ChoiceField(choices=TranslationDirection.AVAILABLE)
+    regime = serializers.ChoiceField(choices=CardTrainer.REGIMES)
+
     def create(self, validated_data):
-        return TranslationDirection(direction=validated_data['direction'])
+        lang_direction = TranslationDirection(direction=validated_data['direction'])
+        card_trainer = CardTrainer(
+            user=self.context['request'].user,
+            lang_direction=lang_direction,
+            regime=validated_data['regime'],
+        )
+        return card_trainer
 
 
 class WordCardSerializer(serializers.ModelSerializer):
