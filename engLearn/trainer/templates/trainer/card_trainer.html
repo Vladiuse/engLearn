@@ -441,7 +441,7 @@
     }
 
 
-    class CardView {
+    class cardView {
         static FLIP_TRANSITION = '1s'
 
         constructor() {
@@ -494,7 +494,7 @@
             // установка враперу карты нужной высоты
             this.cardWrapElem.style.height = this.frontHeight + 'px'
             // установка времени врадения карточки
-            this.flipTransition = CardView.FLIP_TRANSITION
+            this.flipTransition = cardView.FLIP_TRANSITION
 
             this.learnWordBtn.addEventListener('click', () => {
                 cardTrainer.setWordLearn()
@@ -530,12 +530,12 @@
         }
         showFront(quick = true) {
             this._showSide('front', quick)
-            cardView.help50Btn.style.display = 'inline-block'
+            this.cardView.help50Btn.style.display = 'inline-block'
         }
 
         _showSide(side, quick) {
             if (quick) {
-                this.flipTransition = CardView.FLIP_TRANSITION
+                this.flipTransition = this.cardView.FLIP_TRANSITION
             } else {
                 this.flipTransition = '0s'
             }
@@ -664,6 +664,8 @@
         constructor(regime) {
             this._regime = regime
             this.card = null
+            this.cardView = new cardView()
+            this.regimesView = new RegimesView()
             this.nexCard = null
             this._init()
         }
@@ -674,9 +676,9 @@
 
         start() {
             if (this.regime != null) {
-                cardView.show()
+                this.cardView.show()
                 this.getCard(true)
-                regimesView.hide()
+                this.regimesView.hide()
             } else {
                 throw new Error('Cant start without regime mod!!')
             }
@@ -711,7 +713,7 @@
         }
         _drawCard() {
             // отрисовать данные карточки в хтмл карты
-            cardView.drawCard(this.card)
+            this.cardView.drawCard(this.card)
         }
 
 
@@ -719,13 +721,13 @@
             // обработка ответа пользователя
             if (this.card.isAnwerCorrect(wordId)) {
                 console.info('Correct')
-                cardView._showBackCorectItems()
+                this.cardView._showBackCorectItems()
             } else {
                 console.warn('Incorrect answer')
                 var userWord = this.card.getWordById(wordId)
-                cardView._showBackIncorrectItems(userWord)
+                this.cardView._showBackIncorrectItems(userWord)
             }
-            cardView.showBack()
+            this.cardView.showBack()
             this.getCard()
         }
 
@@ -733,7 +735,7 @@
             // отобразить следующую карточку
             this.card = this.nexCard
             this.nexCard = null
-            cardView.showNextCard(this.card)
+            this.cardView.showNextCard(this.card)
         }
         setWordLearn() {
             // Пометить словао как изученое
@@ -746,14 +748,13 @@
             var answersToRemoveCount = this.card.answerdCount - 2
             if (answersToRemoveCount > 0) {
                 var idsToREmove = getRandomElementsFromArray(this.card.incorrectAnswerdIds, answersToRemoveCount)
-                cardView.removeAnswersById(idsToREmove)
+                this.cardView.removeAnswersById(idsToREmove)
             }
-            cardView.help50Btn.style.display = 'none'
+            this.cardView.help50Btn.style.display = 'none'
         }
     }
-    const regimesView = new RegimesView()
+    
     const cardsApi = new CardsApi()
-    const cardView = new CardView()
     const cardTrainer = new CardTrainer()
 
 </script>
