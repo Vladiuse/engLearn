@@ -1,4 +1,4 @@
-from words.models import Word, TranslationDirection
+from words.models import Word, TranslationDirection, EnglishLevel
 from typing import List, Optional
 import random as r
 from django.contrib.auth.models import User
@@ -14,7 +14,7 @@ class Card:
 
 
 class CardTrainer:
-    USER_VOC_REGIME = 'user-vocabulary'
+    USER_VOC_REGIME = 'user_vocabulary'
     REGIMES = [
         USER_VOC_REGIME,
         'A0',
@@ -27,7 +27,6 @@ class CardTrainer:
     ]
     TOTAL_ANSWERS_COUNT = 5
     ANSWERS_COUNT = TOTAL_ANSWERS_COUNT - 1
-    WORD_RANGE = (1000, 2000)
 
     def __init__(self, user: User, regime:str, lang_direction: TranslationDirection):
         self.user = user
@@ -37,11 +36,12 @@ class CardTrainer:
         print(regime, user)
 
     def get_queryset(self):
-        if self.user.is_authenticated:
+        if self.user.is_authenticated and self.regime == CardTrainer.USER_VOC_REGIME:
             userwords_ids = UserWord.objects.filter(owner=self.user, status=UserWord.LEARNING).values('word')
             return Word.objects.filter(pk__in=userwords_ids)
         else:
-            return Word.objects.filter(number_in_dict__range=CardTrainer.WORD_RANGE)
+            level = EnglishLevel.get_by_id(self.regime)
+            return Word.objects.filter(number_in_dict__range=level.words_range)
 
     def get_card(self) -> Card:
         word = self._get_word()

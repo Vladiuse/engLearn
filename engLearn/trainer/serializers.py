@@ -3,8 +3,10 @@ from rest_framework.validators import ValidationError
 from words.models import Word, TranslationDirection
 from .cardtrainer import Card, CardTrainer
 
+
 class TranslationDirectionSerializer(serializers.Serializer):
     direction = serializers.ChoiceField(choices=TranslationDirection.AVAILABLE)
+
 
 class CreateCardSerializer(serializers.Serializer):
     direction = serializers.ChoiceField(choices=TranslationDirection.AVAILABLE)
@@ -46,9 +48,10 @@ class WordCardSerializer(serializers.ModelSerializer):
         model = Word
         fields = '__all__'
 
+
 class CardSerializer:
 
-    def __init__(self, card:Card):
+    def __init__(self, card: Card):
         self.card = card
 
     @property

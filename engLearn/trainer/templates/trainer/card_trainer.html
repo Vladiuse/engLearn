@@ -530,12 +530,12 @@
         }
         showFront(quick = true) {
             this._showSide('front', quick)
-            this.cardView.help50Btn.style.display = 'inline-block'
+            this.help50Btn.style.display = 'inline-block'
         }
 
         _showSide(side, quick) {
             if (quick) {
-                this.flipTransition = this.cardView.FLIP_TRANSITION
+                this.flipTransition = cardView.FLIP_TRANSITION
             } else {
                 this.flipTransition = '0s'
             }
@@ -651,7 +651,7 @@
 
     class CardTrainer {
         static REGIMES = [
-            'user-vocabulary',
+            'user_vocabulary',
             'A0',
             'A1',
             'A2',

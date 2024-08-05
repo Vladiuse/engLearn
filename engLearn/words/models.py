@@ -27,13 +27,13 @@ class TranslationDirection:
 
 
 class EnglishLevel(Enum):
-    BEGINNER = ('A0', 'Beginner', (0, 500), '#6fd2f4')
-    ELEMENTARY = ('A1', 'Elementary', (500, 1000),'#4fc1e9')
-    PRE_INTERMEDIATE = ('A2', 'Pre Intermediate', (1000, 2000),'#3bafda')
-    INTERMEDIATE = ('B1', 'Intermediate', (2000, 3500),'#48cfad')
-    UPPER_INTERMEDIATE = ('B2', 'Upper Intermediate', (3500, 5000),'#37bc9b')
-    ADVANCED = ('C1', 'Advanced', (5000, 8000),'#ac92ec')
-    PROFICIENT = ('C2', 'Proficient', (8000, 12000),'#967adc')
+    A0 = ('A0', 'Beginner', (0, 500), '#6fd2f4')
+    A1 = ('A1', 'Elementary', (500, 1000),'#4fc1e9')
+    A2 = ('A2', 'Pre Intermediate', (1000, 2000),'#3bafda')
+    B1 = ('B1', 'Intermediate', (2000, 3500),'#48cfad')
+    B2 = ('B2', 'Upper Intermediate', (3500, 5000),'#37bc9b')
+    C1 = ('C1', 'Advanced', (5000, 8000),'#ac92ec')
+    C2 = ('C2', 'Proficient', (8000, 12000),'#967adc')
 
     def __init__(self, id, name, words_range, color):
         self._id = id
@@ -60,6 +60,11 @@ class EnglishLevel(Enum):
     @classmethod
     def choices(cls):
         return [level for level in cls]
+
+    @classmethod
+    def get_by_id(cls, id):
+        dic = {level.id:level for level in cls}
+        return dic[id]
 
     def __eq__(self, other):
         return self.id == str(other).upper()
