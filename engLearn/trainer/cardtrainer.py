@@ -18,9 +18,9 @@ class CardTrainer:
     ANSWERS_COUNT = TOTAL_ANSWERS_COUNT - 1
     WORD_RANGE = (1000, 2000)
 
-    def __init__(self, user:User):
+    def __init__(self, user: User):
         self.user = user
-    
+
     def get_queryset(self):
         if self.user.is_authenticated:
             userwords_ids = UserWord.objects.filter(owner=self.user, status=UserWord.LEARNING).values('word')
@@ -38,16 +38,16 @@ class CardTrainer:
         )
         return card
 
-    
     def _get_word(self) -> Word:
         qs = self.get_queryset()
-        return qs.order_by('?').first()
+        word = qs.order_by('?').first()
+        # if not word:
+        #     raise
+        return word
 
-    
-    def _get_answers(self, word: Optional[Word]) -> List[Word]:
+    def _get_answers(self, word: Word) -> List[Word]:
         qs = self.get_queryset()
-        if word:
-            qs.exclude(pk=word.pk)
+        qs.exclude(pk=word.pk)
         qs = qs.order_by('?')[:CardTrainer.ANSWERS_COUNT]
         answers = list(qs)
         answers.append(word)

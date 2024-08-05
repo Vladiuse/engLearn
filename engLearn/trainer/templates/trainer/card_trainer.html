@@ -46,11 +46,196 @@
     #next-card {
         width: 100px;
     }
+</style>
+<style>
+    #regimes-block{
+        display: flex;
+    }
+    .regime {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        border-radius: 25px;
+        width: 160px;
+        height: 160px;
+        /* width: 320px;
+        height: 320px; */
 
+        border-width: 5px;
+        border-style: solid;
+        cursor: pointer;
+        transition: 0.2s;
+
+    }
+
+    .regime:hover {
+        scale: 1.04;
+    }
+
+    .regime-body {
+        text-align: center;
+    }
+
+    .regimes-wrap {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        flex: 1 0 21%;
+        /* explanation below */
+        max-width: 840px;
+        justify-content: center;
+        /* background-color: #c6f1e7; */
+        /* width: ; */
+    }
+
+    .regime p {
+        margin: 2px 0;
+        font-size: 16px;
+    }
+
+    .A0 {
+        color: #6fd2f4;
+        border-color: #6fd2f4;
+    }
+
+    .A1 {
+        color: #4fc1e9;
+        border-color: #4fc1e9;
+    }
+
+    .A2 {
+        color: #3bafda;
+        border-color: #3bafda;
+    }
+
+    .B1 {
+        color: #48cfad;
+        border-color: #48cfad;
+    }
+
+    .B2 {
+        color: #37bc9b;
+        border-color: #37bc9b;
+    }
+
+    .C1 {
+        color: #ac92ec;
+        border-color: #ac92ec;
+    }
+
+    .C2 {
+        color: #967adc;
+        border-color: #967adc;
+    }
+
+    .grey {
+        color: #929194;
+        border-color: #929194;
+    }
 </style>
 <div id="screen">
+    <div class="container  justify-content-center" id="regimes-block">
+
+        <div class="regimes-wrap ">
+            <!-- <div class="regime grey">
+                <div class="regime-title">
+                    
+                    <h1><i class="fa-solid fa-arrow-left" aria-hidden="true"></i></h1>
+                </div>
+                <div class="regime-body">
+                    <p>Назад</p>
+                    
+                </div>
+            </div> -->
+            <div class="regime grey" data-regime-id="user_vocabulary">
+                <div class="regime-title">
+
+                    <h1>
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </h1>
+                </div>
+                <div class="regime-body">
+                    <p>Мой словаpь</p>
+                </div>
+            </div>
+
+
+            <div class="regime A0" data-regime-id="A0">
+                <div class="regime-title">
+                    <h2>A0</h2>
+                </div>
+                <div class="regime-body">
+                    <p>Beginner</p>
+                    <p>(0, 500)</p>
+                </div>
+            </div>
+
+            <div class="regime A1" data-regime-id="A1">
+                <div class="regime-title">
+                    <h2>A1</h2>
+                </div>
+                <div class="regime-body">
+                    <p>Elementary</p>
+                    <p>(500, 1000)</p>
+                </div>
+            </div>
+
+            <div class="regime A2" data-regime-id="A2">
+                <div class="regime-title">
+                    <h2>A2</h2>
+                </div>
+                <div class="regime-body">
+                    <p>Pre Intermediate</p>
+                    <p>(1000, 2000)</p>
+                </div>
+            </div>
+
+            <div class="regime B1" data-regime-id="B1">
+                <div class="regime-title">
+                    <h2>B1</h2>
+                </div>
+                <div class="regime-body">
+                    <p>Intermediate</p>
+                    <p>(2000, 3500)</p>
+                </div>
+            </div>
+
+            <div class="regime B2" data-regime-id="B2">
+                <div class="regime-title">
+                    <h2>B2</h2>
+                </div>
+                <div class="regime-body">
+                    <p>Upper Intermediate</p>
+                    <p>(3500, 5000)</p>
+                </div>
+            </div>
+
+            <div class="regime C1" data-regime-id="C1">
+                <div class="regime-title">
+                    <h2>C1</h2>
+                </div>
+                <div class="regime-body">
+                    <p>Advanced</p>
+                    <p>(5000, 8000)</p>
+                </div>
+            </div>
+
+            <div class="regime C2" data-regime-id="C2">
+                <div class="regime-title">
+                    <h2>C2</h2>
+                </div>
+                <div class="regime-body">
+                    <p>Proficient</p>
+                    <p>(8000, 12000)</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
     <div class="container ">
-        <div id="word-card" class="d-flex justify-content-center">
+        <div id="word-card" class=" justify-content-center" style="display: none;">
             <div class="card-wraper">
                 <div id="front">
                     <div class="card text-center">
@@ -230,10 +415,10 @@
             return Object.keys(this._answers)
         }
 
-        get incorrectAnswerdIds(){
+        get incorrectAnswerdIds() {
             var result = []
             this.answersIds.forEach(id => {
-                if (id != this.target['id']){
+                if (id != this.target['id']) {
                     result.push(id)
                 }
             })
@@ -278,7 +463,7 @@
 
             this._is_front = true;
 
-            this._init()
+            // this._init()
 
         }
 
@@ -317,6 +502,11 @@
             this.help50Btn.addEventListener('click', () => {
                 cardTrainer.help50()
             })
+        }
+
+        show() {
+            this.elem.style.display = 'flex'
+            this._init()
         }
 
         flip() {
@@ -434,19 +624,76 @@
 
     }
 
+    class RegimesView {
+        constructor() {
+            this.elem = document.getElementById('regimes-block')
+            this.regimesBtns = this.elem.querySelectorAll('.regime')
 
+            this._init()
+        }
+
+        _init() {
+            this.regimesBtns.forEach(btn => {
+                btn.addEventListener('click', this.clickRegimeEvent)
+            })
+        }
+
+        clickRegimeEvent(e) {
+            var regime = e.currentTarget.dataset.regimeId
+            cardTrainer.regime = regime
+            cardTrainer.start()
+        }
+
+        hide() {
+            this.elem.style.display = 'none'
+        }
+    }
 
     class CardTrainer {
-        constructor() {
+        static REGIMES = [
+            'user-vocabulary',
+            'A0',
+            'A1',
+            'A2',
+            'B1',
+            'B2',
+            'C1',
+            'C2',
+
+        ]
+        constructor(regime) {
+            this._regime = regime
             this.card = null
             this.nexCard = null
             this._init()
         }
 
         _init() {
-            this.getCard(true)
+
         }
 
+        start() {
+            if (this.regime != null) {
+                cardView.show()
+                this.getCard(true)
+                regimesView.hide()
+            } else {
+                throw new Error('Cant start without regime mod!!')
+            }
+
+        }
+
+        get regime() {
+            return this._regime
+        }
+
+        set regime(regime) {
+            if (CardTrainer.REGIMES.includes(regime)) {
+                this._regime = regime
+            } else {
+                throw new Error('Incorrect regime!');
+            }
+        }
 
         getCard(draw) {
             // получить новую карточку с сервера
@@ -504,7 +751,7 @@
             cardView.help50Btn.style.display = 'none'
         }
     }
-
+    const regimesView = new RegimesView()
     const cardsApi = new CardsApi()
     const cardView = new CardView()
     const cardTrainer = new CardTrainer()

@@ -9,6 +9,7 @@ from django.views.generic import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from rest_framework.decorators import action
+from django.http import HttpResponse
 
 
 class UserWordView(ModelViewSet):
@@ -20,7 +21,6 @@ class UserWordView(ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
-
 
 
 class UserVocabularyView(LoginRequiredMixin,ListView):

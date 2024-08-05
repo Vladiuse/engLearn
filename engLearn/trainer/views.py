@@ -3,17 +3,22 @@ from django.shortcuts import render
 from rest_framework.decorators import api_view
 from .serializers import TranslationDirectionSerializer, CardSerializer
 from rest_framework.response import Response
-from words.models import Word
+from words.models import Word, EnglishLevel
 from  words.serializers import WordSerializer
 from .cardtrainer import CardTrainer
 from rest_framework.renderers import TemplateHTMLRenderer, JSONRenderer, BrowsableAPIRenderer
 from rest_framework.decorators import renderer_classes
 from rest_framework.serializers import Serializer
 from rest_framework.viewsets import ModelViewSet
+from vocabulary.models import UserWord
 
 
 def card_trainer(request):
-    return render(request, 'trainer/card_trainer.html')
+    content = {
+        'regimes': EnglishLevel.choices(),
+        'has_words_to_train': UserWord.is_user_has_words_to_train(request.user),
+    }
+    return render(request, 'trainer/card_trainer.html',content)
 
 
 @api_view()
@@ -24,6 +29,7 @@ def get_card(request, format=None):
     card = CardTrainer(request.user).get_card(lang_direction)
     card_serializer = CardSerializer(card)
     return Response(card_serializer.data)
+
 
 class TestSet(ModelViewSet):
     queryset = Word.objects.all()[:10]
@@ -36,7 +42,6 @@ class TestSet(ModelViewSet):
         else:
             return [JSONRenderer(), BrowsableAPIRenderer()]
 
-
     def render_html_response(self, request):
         words = self.get_queryset()
         return render(request, self.template_name, {'words': words})
@@ -46,12 +51,3 @@ class TestSet(ModelViewSet):
             return self.render_html_response(request)
         else:
             return super().list(request, *args, **kwargs)
-
-# @api_view(['GET'])
-# def test(request):
-#     data = {
-#         'data': 'DATA',
-#         'request': request.query_params
-#     }
-#     return Response(data, template_name='vocabulary/test.html')
-#     # return render(request, 'vocabulary/test.html')

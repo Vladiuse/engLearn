@@ -36,3 +36,9 @@ class UserWord(models.Model):
 
     class Meta:
         unique_together = ('owner', 'word')
+
+    @staticmethod
+    def is_user_has_words_to_train(user):
+        if user.is_authenticated:
+            return UserWord.objects.filter(owner=user, status=UserWord.LEARNING).exists()
+        return False

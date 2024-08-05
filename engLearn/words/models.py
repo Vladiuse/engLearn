@@ -1,10 +1,11 @@
 from django.db import models
+from enum import Enum
+
 
 class TranslationDirection:
-
     AVAILABLE = ('en-ru', 'ru-en')
 
-    def __init__(self, direction:str):
+    def __init__(self, direction: str):
         self.direction = direction
         if self.direction not in TranslationDirection.AVAILABLE:
             raise ValueError('Incorrect lang')
@@ -19,14 +20,52 @@ class TranslationDirection:
     @property
     def target_lang(self) -> str:
         return self.direction.split('-')[-1]
+
     def reverse(self) -> 'TranslationDirection':
         lang = self.target_lang + '-' + self.source_lang
         return TranslationDirection(lang)
 
 
+class EnglishLevel(Enum):
+    BEGINNER = ('A0', 'Beginner', (0, 500), '#6fd2f4')
+    ELEMENTARY = ('A1', 'Elementary', (500, 1000),'#4fc1e9')
+    PRE_INTERMEDIATE = ('A2', 'Pre Intermediate', (1000, 2000),'#3bafda')
+    INTERMEDIATE = ('B1', 'Intermediate', (2000, 3500),'#48cfad')
+    UPPER_INTERMEDIATE = ('B2', 'Upper Intermediate', (3500, 5000),'#37bc9b')
+    ADVANCED = ('C1', 'Advanced', (5000, 8000),'#ac92ec')
+    PROFICIENT = ('C2', 'Proficient', (8000, 12000),'#967adc')
+
+    def __init__(self, id, name, words_range, color):
+        self._id = id
+        self._name = name
+        self._color = color
+        self._words_range = words_range
+
+    @property
+    def id(self):
+        return self._id
+
+    @property
+    def name(self):
+        return self._name
+
+    @property
+    def color(self):
+        return self._color
+
+    @property
+    def words_range(self):
+        return self._words_range
+
+    @classmethod
+    def choices(cls):
+        return [level for level in cls]
+
+    def __eq__(self, other):
+        return self.id == str(other).upper()
+
 
 class Word(models.Model):
-
     number_in_dict = models.PositiveIntegerField(blank=True, null=True)
     en = models.CharField(max_length=100, unique=True)
     ru = models.CharField(max_length=100)
