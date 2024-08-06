@@ -3,6 +3,7 @@ from typing import List, Optional
 import random as r
 from django.contrib.auth.models import User
 from vocabulary.models import UserWord
+from .exceptions import CardTrainerError, NoWordsToLearError
 
 
 class Card:
@@ -56,14 +57,13 @@ class CardTrainer:
     def _get_word(self) -> Word:
         qs = self.get_queryset()
         word = qs.order_by('?').first()
-        # if not word:
-        #     raise
+        if not word:
+            raise NoWordsToLearError
         return word
 
     def _get_answers(self, word: Word) -> List[Word]:
         qs = self.get_queryset()
-        qs.exclude(pk=word.pk)
-        qs = qs.order_by('?')[:CardTrainer.ANSWERS_COUNT]
+        qs = qs.exclude(pk=word.pk).order_by('?')[:CardTrainer.ANSWERS_COUNT]
         answers = list(qs)
         answers.append(word)
         r.shuffle(answers)

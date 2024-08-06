@@ -19,6 +19,10 @@ class UserWordView(ModelViewSet):
 
     lookup_field = 'word'
 
+    def get_object(self):
+        pk = self.kwargs['word']
+        return self.get_queryset().get(word_id=pk,owner=self.request.user)
+
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 

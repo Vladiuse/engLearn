@@ -48,9 +48,10 @@
     }
 </style>
 <style>
-    #regimes-block{
+    #regimes-block {
         display: flex;
     }
+
     .regime {
         display: flex;
         flex-direction: column;
@@ -136,6 +137,18 @@
     }
 </style>
 <div id="screen">
+    <div class="container flex-column align-items-center" id="error-block" style="display: none;">
+        <h3>Кончились слова для изучения</h3>
+        <a href="{%url 'words:words_base'%}">Добавить новые слова</a>
+    </div>
+
+    {%if not has_words_to_train%}
+    <div class="container d-flex flex-column align-items-center">
+        <h3>Ваш словарь пуст</h3>
+        <a href="{%url 'words:words_base'%}">Добавить новые слова</a>
+    </div>
+    {%endif%}
+
     <div class="container  justify-content-center" id="regimes-block">
 
         <div class="regimes-wrap ">
@@ -149,6 +162,7 @@
                     
                 </div>
             </div> -->
+            {%if has_words_to_train%}
             <div class="regime grey" data-regime-id="user_vocabulary">
                 <div class="regime-title">
 
@@ -160,6 +174,7 @@
                     <p>Мой словаpь</p>
                 </div>
             </div>
+            {%endif%}
 
 
             <div class="regime A0" data-regime-id="A0">
@@ -346,6 +361,13 @@
     var isUserAuth = false
     // {%endif%}
 
+
+    class CardTrainerError extends Error {
+        constructor(text) {
+            super(text);
+        }
+    }
+
     class CardsApi {
 
         async loadCard(regime) {
@@ -355,14 +377,20 @@
                 if (!response.ok) {
                     throw new Error(`Response status: ${response.status}`);
                 }
-
+                if (response.status == 204) {
+                    throw new CardTrainerError('');
+                }
                 const json = await response.json();
                 return new Card(json)
             } catch (error) {
-                console.error(error);
-                console.error(error.message);
-                showError('Card not loaded: ' + error.message)
-                return undefined
+                if (error instanceof CardTrainerError) {
+                    throw error
+                } else {
+                    console.error(error);
+                    console.error(error.message);
+                    showError('Card not loaded: ' + error.message)
+                    return undefined
+                }
             }
 
         }
@@ -460,7 +488,7 @@
             this.asnwerBlock = document.getElementById('answers')
             this.learnWordBtn = document.getElementById('learn-word')
             this.help50Btn = document.getElementById('help-50')
-
+            this.errorBlock = document.getElementById('error-block')
             this._is_front = true;
 
             // this._init()
@@ -507,6 +535,15 @@
         show() {
             this.elem.style.display = 'flex'
             this._init()
+        }
+
+        hide() {
+            this.elem.style.display = 'none'
+        }
+
+        showErrorBlock() {
+            this.hide()
+            this.errorBlock.style.display = 'flex'
         }
 
         flip() {
@@ -668,6 +705,7 @@
             this.regimesView = new RegimesView()
             this.nexCard = null
             this._init()
+            this.isCardsEnds = false
         }
 
         _init() {
@@ -697,6 +735,7 @@
             }
         }
 
+
         getCard(draw) {
             // получить новую карточку с сервера
             cardsApi.loadCard(this.regime).then(card => {
@@ -709,6 +748,8 @@
                         this._drawCard()
                     }
                 }
+            }).catch(error => {
+                this.isCardsEnds = true
             })
         }
         _drawCard() {
@@ -733,9 +774,17 @@
 
         nextCard() {
             // отобразить следующую карточку
-            this.card = this.nexCard
-            this.nexCard = null
-            this.cardView.showNextCard(this.card)
+            if (this.isCardsEnds) {
+                $(this.cardView.cardWrapElem).slideUp(() => {
+                    this.cardView.showErrorBlock()
+                })
+      
+            } else {
+                this.card = this.nexCard
+                this.nexCard = null
+                this.cardView.showNextCard(this.card)
+            }
+
         }
         setWordLearn() {
             // Пометить словао как изученое

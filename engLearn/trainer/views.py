@@ -11,7 +11,9 @@ from rest_framework.decorators import renderer_classes
 from rest_framework.serializers import Serializer
 from rest_framework.viewsets import ModelViewSet
 from vocabulary.models import UserWord
-
+from .exceptions import CardTrainerError
+from rest_framework import status
+from rest_framework.response import Response
 
 def card_trainer(request):
     content = {
@@ -26,9 +28,12 @@ def get_card(request, format=None):
     serializer = CreateCardSerializer(data=request.query_params, context={'request': request})
     serializer.is_valid(raise_exception=True)
     card_trainer = serializer.save()
-    card = card_trainer.get_card()
-    card_serializer = CardSerializer(card)
-    return Response(card_serializer.data)
+    try:
+        card = card_trainer.get_card()
+        card_serializer = CardSerializer(card)
+        return Response(card_serializer.data)
+    except CardTrainerError:
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class TestSet(ModelViewSet):
