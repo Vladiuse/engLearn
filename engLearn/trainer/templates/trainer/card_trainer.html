@@ -374,7 +374,7 @@
     class CardsApi {
 
         async loadCard(regime) {
-            var url = `http://127.0.0.1:8000{%url 'trainer:get_card'%}?direction=en-ru&regime=${regime}`
+            var url = `{{ request.scheme }}://{{ request.META.HTTP_HOST }}{%url 'trainer:get_card'%}?direction=en-ru&regime=${regime}`
             try {
                 const response = await fetch(url);
                 if (!response.ok) {
@@ -398,7 +398,7 @@
 
         }
         async changeWordStatus(wordId, status) {
-            var url = `http://127.0.0.1:8000/vocabulary/api/${wordId}/`
+            var url = `{{ request.scheme }}://{{ request.META.HTTP_HOST }}/vocabulary/api/${wordId}/`
             var headers = {
                 "Content-Type": "application/json",
                 "X-CSRFToken": csrf,
