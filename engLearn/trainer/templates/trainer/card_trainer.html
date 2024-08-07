@@ -45,8 +45,11 @@
 
     #next-card {
         width: 100px;
+        font-size: 20px;
+        margin-top: 16px;
     }
-    .card-footer{
+
+    .card-footer {
         min-height: 55px;
     }
 </style>
@@ -137,6 +140,13 @@
     .grey {
         color: #929194;
         border-color: #929194;
+    }
+
+    @media screen and (max-width: 800px) {
+        .card-wraper {
+            min-width: 100%;
+            max-width: none;
+        }
     }
 </style>
 <div id="screen">
@@ -781,7 +791,7 @@
                 $(this.cardView.cardWrapElem).slideUp(() => {
                     this.cardView.showErrorBlock()
                 })
-      
+
             } else {
                 this.card = this.nexCard
                 this.nexCard = null
