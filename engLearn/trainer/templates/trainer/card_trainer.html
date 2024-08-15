@@ -1,4 +1,5 @@
 {%extends 'base.html'%}
+{%load static%}
 {%block content%}
 <style>
     #word-card {}
@@ -148,6 +149,31 @@
             max-width: none;
         }
     }
+
+    #chose-lang-direction i {
+        font-size: 32px;
+    }
+
+    #chose-lang-direction {
+        margin-bottom: 30px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 20px;
+        align-items: center;
+        border: 2px solid rgb(194, 194, 194);
+        padding: 10px;
+        border-radius: 42px;
+        cursor: pointer;
+    }
+
+    #chose-lang-direction img {
+
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        border: 1px solid rgb(228, 228, 228);
+    }
 </style>
 <div id="screen">
     <div class="container flex-column align-items-center" id="error-block" style="display: none;">
@@ -161,7 +187,19 @@
         <a href="{%url 'words:words_base'%}">Добавить новые слова</a>
     </div>
     {%endif%}
-
+    <div class="d-flex justify-content-center" >
+        <div id="chose-lang-direction" data-lang-direction="en-ru">
+            <div>
+                <img src="{%static 'vocabulary/img/gb.svg'%}" alt="">
+            </div>
+            <div>
+                <i class="fa fa-arrow-right" aria-hidden="true"></i>
+            </div>
+            <div>
+                <img src="{%static 'vocabulary/img/ru.svg'%}" alt="">
+            </div>
+        </div>
+    </div>
     <div class="container  justify-content-center" id="regimes-block">
 
         <div class="regimes-wrap ">
@@ -333,7 +371,7 @@
             <div class="toast-body">
                 Hello, world! This is a toast message.
             </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" bs-dismiss="toast"
                 aria-label="Close"></button>
         </div>
     </div>
@@ -383,8 +421,8 @@
 
     class CardsApi {
 
-        async loadCard(regime) {
-            var url = `{{ request.scheme }}://{{ request.META.HTTP_HOST }}{%url 'trainer:get_card'%}?direction=en-ru&regime=${regime}`
+        async loadCard(regime, landDirection) {
+            var url = `{{ request.scheme }}://{{ request.META.HTTP_HOST }}{%url 'trainer:get_card'%}?direction=${landDirection}&regime=${regime}`
             try {
                 const response = await fetch(url);
                 if (!response.ok) {
@@ -668,7 +706,7 @@
 
         removeAnswersById(wordsIds) {
             wordsIds.forEach(wordId => {
-                this.asnwerBlock.querySelector(`button[data-word-id="${wordId}"]`).remove()
+                this.asnwerBlock.querySelector(`button[word-id="${wordId}"]`).remove()
             })
         }
 
@@ -678,6 +716,7 @@
         constructor() {
             this.elem = document.getElementById('regimes-block')
             this.regimesBtns = this.elem.querySelectorAll('.regime')
+            this.langDirectionElem = document.getElementById('chose-lang-direction')
 
             this._init()
         }
@@ -686,6 +725,21 @@
             this.regimesBtns.forEach(btn => {
                 btn.addEventListener('click', this.clickRegimeEvent)
             })
+            this.langDirectionElem.addEventListener('click', this.clickLangDirectionEvent.bind(this))
+        }
+
+        clickLangDirectionEvent(e){
+            
+            var curDirection = e.currentTarget.dataset.langDirection
+            if (curDirection == 'en-ru'){
+                this.langDirectionElem.dataset.langDirection = 'ru-en'
+                this.langDirectionElem.style.flexDirection = 'row-reverse'
+                cardTrainer.langDirection = 'ru-en'
+            } else {
+                this.langDirectionElem.dataset.langDirection = 'en-ru'
+                this.langDirectionElem.style.flexDirection = 'row'
+                cardTrainer.langDirection = 'en-ru'
+            }
         }
 
         clickRegimeEvent(e) {
@@ -711,8 +765,13 @@
             'C2',
 
         ]
+        static LANG_DIRECTIONS = [
+            'en-ru',
+            'ru-en',
+        ]
         constructor(regime) {
             this._regime = regime
+            this._langDirection = null
             this.card = null
             this.cardView = new cardView()
             this.regimesView = new RegimesView()
@@ -741,6 +800,7 @@
         }
 
         set regime(regime) {
+            console.log(regime)
             if (CardTrainer.REGIMES.includes(regime)) {
                 this._regime = regime
             } else {
@@ -748,10 +808,21 @@
             }
         }
 
+        get langDirection(){
+            return this._langDirection
+        }
+
+        set langDirection(langDirection){
+            if (CardTrainer.LANG_DIRECTIONS.includes(langDirection)){
+                this._langDirection = langDirection
+            } else {
+                throw new Error('Incorrect Lang Direction!');
+            }
+        }
 
         getCard(draw) {
             // получить новую карточку с сервера
-            cardsApi.loadCard(this.regime).then(card => {
+            cardsApi.loadCard(this.regime, this.langDirection).then(card => {
                 if (card != undefined) {
                     this.nexCard = card
 
