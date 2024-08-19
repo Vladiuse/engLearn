@@ -86,6 +86,6 @@ class IrregularVerb(models.Model):
 
 
 class Sentence(models.Model):
-    word = models.ForeignKey(to=Word, on_delete=models.CASCADE)
+    word = models.ManyToManyField(to=Word)
     end = models.CharField(max_length=255)
     ru = models.CharField(max_length=255, blank=True)
