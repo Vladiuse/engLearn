@@ -78,6 +78,9 @@ class Word(models.Model):
     class Meta:
         ordering = ('number_in_dict',)
 
+    def __str__(self):
+        return f'{self.en} - {self.ru}'
+
 
 class IrregularVerb(models.Model):
     first_form = models.OneToOneField(Word, on_delete=models.PROTECT)
@@ -89,3 +92,6 @@ class Sentence(models.Model):
     word = models.ManyToManyField(to=Word)
     en = models.CharField(max_length=255)
     ru = models.CharField(max_length=255, blank=True)
+
+    def __str__(self):
+        return str(self.en)
