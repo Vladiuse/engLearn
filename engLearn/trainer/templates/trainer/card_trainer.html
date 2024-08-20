@@ -187,7 +187,7 @@
         <a href="{%url 'words:words_base'%}">Добавить новые слова</a>
     </div>
     {%endif%}
-    <div class="d-flex justify-content-center" >
+    <div class="d-flex justify-content-center">
         <div id="chose-lang-direction" data-lang-direction="en-ru">
             <div>
                 <img src="{%static 'vocabulary/img/gb.svg'%}" alt="">
@@ -706,7 +706,7 @@
 
         removeAnswersById(wordsIds) {
             wordsIds.forEach(wordId => {
-                this.asnwerBlock.querySelector(`button[word-id="${wordId}"]`).remove()
+                this.asnwerBlock.querySelector(`button[data-word-id="${wordId}"]`).remove()
             })
         }
 
@@ -723,15 +723,19 @@
 
         _init() {
             this.regimesBtns.forEach(btn => {
-                btn.addEventListener('click', this.clickRegimeEvent)
+                btn.addEventListener('click', this.clickRegimeEvent.bind(this))
             })
             this.langDirectionElem.addEventListener('click', this.clickLangDirectionEvent.bind(this))
         }
 
-        clickLangDirectionEvent(e){
-            
+        get langDirection() {
+            return this.langDirectionElem.dataset.langDirection
+        }
+
+        clickLangDirectionEvent(e) {
+
             var curDirection = e.currentTarget.dataset.langDirection
-            if (curDirection == 'en-ru'){
+            if (curDirection == 'en-ru') {
                 this.langDirectionElem.dataset.langDirection = 'ru-en'
                 this.langDirectionElem.style.flexDirection = 'row-reverse'
                 cardTrainer.langDirection = 'ru-en'
@@ -745,6 +749,7 @@
         clickRegimeEvent(e) {
             var regime = e.currentTarget.dataset.regimeId
             cardTrainer.regime = regime
+            cardTrainer.langDirection = this.langDirection
             cardTrainer.start()
         }
 
@@ -770,11 +775,11 @@
             'ru-en',
         ]
         constructor(regime) {
+            this.cardView = new cardView()
+            this.regimesView = new RegimesView()
             this._regime = regime
             this._langDirection = null
             this.card = null
-            this.cardView = new cardView()
-            this.regimesView = new RegimesView()
             this.nexCard = null
             this._init()
             this.isCardsEnds = false
@@ -800,23 +805,24 @@
         }
 
         set regime(regime) {
-            console.log(regime)
             if (CardTrainer.REGIMES.includes(regime)) {
                 this._regime = regime
             } else {
-                throw new Error('Incorrect regime!');
+                var msg = `Incorrect regime! : ${regime}`
+                throw new Error(msg);
             }
         }
 
-        get langDirection(){
+        get langDirection() {
             return this._langDirection
         }
 
-        set langDirection(langDirection){
-            if (CardTrainer.LANG_DIRECTIONS.includes(langDirection)){
+        set langDirection(langDirection) {
+            if (CardTrainer.LANG_DIRECTIONS.includes(langDirection)) {
                 this._langDirection = langDirection
             } else {
-                throw new Error('Incorrect Lang Direction!');
+                var msg = `Incorrect Lang Direction! ${langDirection}`
+                throw new Error(msg);
             }
         }
 
