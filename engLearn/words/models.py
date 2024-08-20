@@ -74,6 +74,7 @@ class Word(models.Model):
     number_in_dict = models.PositiveIntegerField(blank=True, null=True)
     en = models.CharField(max_length=100, unique=True)
     ru = models.CharField(max_length=100)
+    created = models.DateField(auto_created=True)
 
     class Meta:
         ordering = ('number_in_dict',)
