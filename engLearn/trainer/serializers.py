@@ -1,8 +1,7 @@
 from rest_framework import serializers
 from rest_framework.validators import ValidationError
-from words.models import Word, TranslationDirection
+from words.models import Word, TranslationDirection, Sentence
 from .cardtrainer import Card, CardTrainer
-
 
 class TranslationDirectionSerializer(serializers.Serializer):
     direction = serializers.ChoiceField(choices=TranslationDirection.AVAILABLE)
@@ -49,6 +48,18 @@ class WordCardSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class SentenceCardSerializer(WordCardSerializer):
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        sentence = data.pop('word')
+        data['sentence'] = sentence
+        return data
+
+    class Meta:
+        model = Sentence
+        exclude = ('words',)
+
+
 class CardSerializer:
 
     def __init__(self, card: Card):
@@ -59,8 +70,13 @@ class CardSerializer:
         data = {
             'target': WordCardSerializer(self.card.target, lang=self.card.lang_direction).data,
             'answers': WordCardSerializer(self.card.answers, lang=self.card.lang_direction, many=True).data,
-
-            # 'lang': str(self.lang),
+            'sentence': self.sentence_data,
             'lang_direction': TranslationDirectionSerializer(self.card.lang_direction).data
         }
         return data
+
+    @property
+    def sentence_data(self):
+        if self.card.sentence:
+            return SentenceCardSerializer(self.card.sentence, lang=self.card.lang_direction).data
+        return None

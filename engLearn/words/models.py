@@ -91,7 +91,7 @@ class IrregularVerb(models.Model):
 
 
 class Sentence(models.Model):
-    word = models.ManyToManyField(to=Word)
+    words = models.ManyToManyField(to=Word, related_name='sentences', related_query_name='sentence')
     en = models.CharField(max_length=255)
     ru = models.CharField(max_length=255, blank=True)
 

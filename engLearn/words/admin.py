@@ -7,7 +7,7 @@ from django.contrib import messages
 
 
 class WordContext(admin.TabularInline):
-    model = Sentence.word.through
+    model = Sentence.words.through
     extra = 0
     can_delete = False
     show_change_link = True
@@ -60,7 +60,7 @@ class IrregularVerbAdmin(admin.ModelAdmin):
 
 class SentenceAdmin(admin.ModelAdmin):
     list_display = ['pk', 'en', 'ru']
-    autocomplete_fields = ['word']
+    autocomplete_fields = ['words']
     inlines = [
         WordContext,
     ]
