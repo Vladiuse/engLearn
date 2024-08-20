@@ -755,6 +755,7 @@
 
         hide() {
             this.elem.style.display = 'none'
+            this.langDirectionElem.style.display = 'none'
         }
     }
 
@@ -791,6 +792,7 @@
 
         start() {
             if (this.regime != null) {
+                
                 this.cardView.show()
                 this.getCard(true)
                 this.regimesView.hide()
