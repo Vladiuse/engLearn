@@ -7,15 +7,22 @@
     }
 </style>
 <div id="screen">
-<div class="container d-flex justify-content-center">
-    <h4>Слов изучено {{stat.words_learned}}/{{stat.total_words}}</h4>
-</div>
+    {%if user.is_authenticated%}
+    <div class="container d-flex justify-content-center">
+        <h4>Слов изучено {{stat.words_learned}}/{{stat.total_words}}</h4>
+    </div>
     <div class="container d-flex justify-content-center">
         <div class="progress">
-            <div class="progress-bar" role="progressbar" style="width: {{stat.percent}}%;" aria-valuenow="{{stat.words_learned}}" aria-valuemin="0"
-                aria-valuemax="{{stat.total_words}}">{{stat.percent}}%</div>
+            <div class="progress-bar" role="progressbar" style="width: {{stat.percent}}%;"
+                aria-valuenow="{{stat.words_learned}}" aria-valuemin="0" aria-valuemax="{{stat.total_words}}">
+                {{stat.percent}}%</div>
         </div>
     </div>
+    {%else%}
+    <div class="container d-flex justify-content-center">
+        <h4>Hello!</h4>
+    </div>
+    {%endif%}
 </div>
 
 {%endblock%}
