@@ -22,10 +22,10 @@ from users import views as user_view
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from django.views.generic import TemplateView
+from vocabulary import views as voc_views
 
 urlpatterns = [
-    path('', TemplateView.as_view(template_name='index.html'),name='main'),
+    path('',voc_views.main ,name='main'),
     path('login/', auth_views.LoginView.as_view(), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('sign_up/', user_view.RegisterView.as_view(), name='sign_up'),
