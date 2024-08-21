@@ -3,13 +3,9 @@ from .serializer import UserWordSerializer
 from .models import UserWord, Vocabulary
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
-from rest_framework import status
-from rest_framework.response import Response
 from django.views.generic import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
-from rest_framework.decorators import action
-from django.http import HttpResponse
 
 def main(request):
     content = {}

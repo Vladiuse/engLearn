@@ -2,7 +2,6 @@ from django.contrib import admin
 from .models import Word, IrregularVerb, Sentence
 from vocabulary.models import UserWord
 from django.db import IntegrityError
-from django.utils.translation import ngettext
 from django.contrib import messages
 
 

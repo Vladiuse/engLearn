@@ -1,19 +1,14 @@
-import random as r
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from .serializers import CreateCardSerializer, CardSerializer
 from rest_framework.response import Response
 from words.models import Word, EnglishLevel
 from  words.serializers import WordSerializer
-from .cardtrainer import CardTrainer
 from rest_framework.renderers import TemplateHTMLRenderer, JSONRenderer, BrowsableAPIRenderer
-from rest_framework.decorators import renderer_classes
-from rest_framework.serializers import Serializer
 from rest_framework.viewsets import ModelViewSet
 from vocabulary.models import UserWord
 from .exceptions import CardTrainerError
 from rest_framework import status
-from rest_framework.response import Response
 
 def card_trainer(request):
     content = {
