@@ -21,7 +21,7 @@ class WordAdmin(admin.ModelAdmin):
         WordContext,
     ]
     actions = ["add_to_vocabulary"]
-
+    readonly_fields = ['created_by']
 
     @admin.action(description='Add to vocabulary')
     def add_to_vocabulary(self, request, queryset):
@@ -43,6 +43,11 @@ class WordAdmin(admin.ModelAdmin):
             message,
             status,
         )
+
+    def save_model(self, request, obj, form, change):
+        obj.created_by = request.user
+        super().save_model(request, obj, form, change)
+        UserWord.objects.create(word=obj, owner=request.user)
 
 
 class IrregularVerbAdmin(admin.ModelAdmin):

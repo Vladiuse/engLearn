@@ -1,5 +1,6 @@
 from django.db import models
 from enum import Enum
+from django.contrib.auth.models import User
 
 
 class TranslationDirection:
@@ -28,12 +29,12 @@ class TranslationDirection:
 
 class EnglishLevel(Enum):
     A0 = ('A0', 'Beginner', (0, 500), '#6fd2f4')
-    A1 = ('A1', 'Elementary', (500, 1000),'#4fc1e9')
-    A2 = ('A2', 'Pre Intermediate', (1000, 2000),'#3bafda')
-    B1 = ('B1', 'Intermediate', (2000, 3500),'#48cfad')
-    B2 = ('B2', 'Upper Intermediate', (3500, 5000),'#37bc9b')
-    C1 = ('C1', 'Advanced', (5000, 8000),'#ac92ec')
-    C2 = ('C2', 'Proficient', (8000, 12000),'#967adc')
+    A1 = ('A1', 'Elementary', (500, 1000), '#4fc1e9')
+    A2 = ('A2', 'Pre Intermediate', (1000, 2000), '#3bafda')
+    B1 = ('B1', 'Intermediate', (2000, 3500), '#48cfad')
+    B2 = ('B2', 'Upper Intermediate', (3500, 5000), '#37bc9b')
+    C1 = ('C1', 'Advanced', (5000, 8000), '#ac92ec')
+    C2 = ('C2', 'Proficient', (8000, 12000), '#967adc')
 
     def __init__(self, id, name, words_range, color):
         self._id = id
@@ -63,7 +64,7 @@ class EnglishLevel(Enum):
 
     @classmethod
     def get_by_id(cls, id):
-        dic = {level.id:level for level in cls}
+        dic = {level.id: level for level in cls}
         return dic[id]
 
     def __eq__(self, other):
@@ -74,7 +75,8 @@ class Word(models.Model):
     number_in_dict = models.PositiveIntegerField(blank=True, null=True)
     en = models.CharField(max_length=100)
     ru = models.CharField(max_length=100)
-    created = models.DateField(auto_created=True)
+    created = models.DateField(auto_now=True)
+    created_by = models.ForeignKey(to=User, on_delete=models.SET_NULL, blank=True, null=True,)
 
     class Meta:
         ordering = ('number_in_dict',)
