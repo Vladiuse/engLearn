@@ -310,12 +310,7 @@
                         </div>
                         <div class="card-body">
                             <h5 class="card-title" id="word">Front</h5>
-                            <!-- <p class="card-text" id="sentence">With supporting text below as a natural lead-in to
-                                    additional content.
-                                    With supporting text below as a natural lead-in to additional content.
-                                    With supporting text below as a natural lead-in to additional content.
-                                    With supporting text below as a natural lead-in to additional content.
-                                </p> -->
+                            <p class="card-text" id="sentence" style="display: none;"></p>
                             <div id="answers">
                                 <button type="button" class="btn btn-outline-primary answer-option">Word 1</button>
                                 <button type="button" class="btn btn-outline-primary answer-option">Word 2</button>
@@ -346,6 +341,7 @@
                             <h5 id="word-translate">Front - Лицевая сторона</h5>
                             <p id="wrong-answer-translate" class="incorrect-answer"><b>Wrong</b> - Неправильный ответ
                             </p>
+                            <p class="card-text" id="sentence-translate" style="display: none;"></p>
                             <a id="next-card" href="#" class="btn btn-primary" id="next-word"><i class="fas fa-forward"
                                     aria-hidden="true"></i></a>
                         </div>
@@ -480,6 +476,7 @@
         constructor(cardData) {
             this.target = cardData['target']
             this.answersList = cardData['answers']
+            this.sentence = cardData['sentence']
             this.lang_direction = cardData['lang_direction']['direction']
             this._answers = {}
 
@@ -531,6 +528,7 @@
             this.front = document.getElementById('front')
             this.nextCardBtn = document.getElementById('next-card')
             this.sentenceBlock = document.getElementById('sentence')
+            this.sentenceTranslateBlock = document.getElementById('sentence-translate')
             this.wrongAnswerBlock = document.getElementById('wrong-answer-translate')
             this.correctAnswerElems = this.elem.querySelectorAll('.correct-answer')
             this.incorrectAnswerElems = this.elem.querySelectorAll('.incorrect-answer')
@@ -665,6 +663,7 @@
             this._drawTargetWord(card.target)
             this._drawAnswerButtons(card.answersList)
             this._drawNumberInDict(card.target)
+            this._drawSentence(card.sentence)
         }
 
         _drawTargetWord(word) {
@@ -703,6 +702,21 @@
             var userWordId = btn.dataset.wordId
             cardTrainer.proccesUserAnswer(userWordId)
         }
+        _drawSentence(sentence){
+            console.log(sentence)
+            if (sentence){
+                this.sentenceBlock.innerText = sentence['sentence']
+                this.sentenceTranslateBlock.innerText = sentence['translate']
+
+                this.sentenceBlock.style.display = 'block'
+                this.sentenceTranslateBlock.style.display = 'block'
+            } else {
+                this.sentenceBlock.style.display = 'none'
+                this.sentenceTranslateBlock.style.display = 'none'
+            }
+        }
+
+        
 
         removeAnswersById(wordsIds) {
             wordsIds.forEach(wordId => {

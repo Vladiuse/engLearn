@@ -63,7 +63,7 @@ class CardTrainer:
         return card
 
     def _get_word(self) -> Word:
-        qs = self.get_queryset().filter(number_in_dict=1)
+        qs = self.get_queryset()
         word = qs.order_by('?').first()
         if not word:
             raise NoWordsToLearError
