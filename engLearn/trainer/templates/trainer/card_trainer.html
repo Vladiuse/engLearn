@@ -408,6 +408,7 @@
 
     const GREEN_COLOR = '#148014'
     const RED_COLOR = '#c62424'
+    const ANSWER_SHOW_TIMEOUT = 1000
     class CardTrainerError extends Error {
         constructor(text) {
             super(text);
@@ -705,6 +706,9 @@
             answers.forEach(word => {
                 this._drawAnswerBtn(word)
             })
+            if (ANSWER_SHOW_TIMEOUT){
+                setTimeout(this._makeAnswersBtnActive.bind(this), ANSWER_SHOW_TIMEOUT)
+            }
         }
         _drawNumberInDict(target) {
             this.backCardHeader.innerText = '#' + target['number_in_dict']
@@ -718,8 +722,12 @@
             btn.dataset.wordId = word['id']
             btn.setAttribute('type', 'bytton')
             this.asnwerBlock.appendChild(btn)
-
             btn.addEventListener('click', this._answerBtnClickEvent)
+
+            if (ANSWER_SHOW_TIMEOUT){
+                btn.setAttribute('disabled', 'disabled')
+                btn.style.filter = 'blur(3px)'
+            }
         }
 
         _answerBtnClickEvent(e) {
@@ -740,6 +748,13 @@
                 this.sentenceBlock.style.display = 'none'
                 this.sentenceTranslateBlock.style.display = 'none'
             }
+        }
+        _makeAnswersBtnActive(){
+            var answerBtns = this.asnwerBlock.querySelectorAll('.answer-option')
+            answerBtns.forEach(btn => {
+                btn.removeAttribute('disabled')
+                btn.style.filter = 'blur(0px)'
+            })
         }
 
         
