@@ -50,7 +50,8 @@
         margin-top: 16px;
     }
 
-    .card-footer, .card-header {
+    .card-footer,
+    .card-header {
         min-height: 55px;
     }
 </style>
@@ -326,7 +327,8 @@
                             </div>
                         </div>
                         <div class="card-footer text-muted">
-                            <button type="button" class="btn btn-outline-secondary" id="dont-know-button">Не знаю</button>
+                            <button type="button" class="btn btn-outline-secondary" id="dont-know-button">Не
+                                знаю</button>
                             <button id="help-50" type="button" class="btn btn-outline-secondary">50 на 50</button>
                         </div>
                     </div>
@@ -581,7 +583,7 @@
                 cardTrainer.help50()
             })
 
-            this.dontKnowBtn.addEventListener('click', ()=> {
+            this.dontKnowBtn.addEventListener('click', () => {
                 cardTrainer.dontKnowBtn()
             })
         }
@@ -644,15 +646,15 @@
 
         }
 
-        _drawTitle(text, color, bold){
+        _drawTitle(text, color, bold) {
             this.backCardHeader.innerHTML = ''
-            if (bold){
+            if (bold) {
                 var title = document.createElement('b')
                 this.backCardHeader.appendChild(title)
             } else {
                 var title = this.backCardHeader
             }
-            if (color){
+            if (color) {
                 title.style.color = color
             }
             title.innerText = text
@@ -673,7 +675,7 @@
 
             this._drawUserWrondAnswer(userWrongAnswerWord)
         }
-        _showBackAnswer(){
+        _showBackAnswer() {
             this.correctAnswerElems.forEach(elem => elem.style.display = 'inline-block')
             this.incorrectAnswerElems.forEach(elem => elem.style.display = 'none')
             this._drawTitle('')
@@ -691,6 +693,12 @@
             this._drawAnswerButtons(card.answersList)
             this._drawNumberInDict(card.target)
             this._drawSentence(card.sentence)
+            console.log(card.answersList.length)
+            if (card.answersList.length <= 2) {
+                this.help50Btn.style.display = 'none'
+            } else {
+                this.help50Btn.style.display = 'inline-block'
+            }
         }
 
         _drawTargetWord(word) {
@@ -706,7 +714,7 @@
             answers.forEach(word => {
                 this._drawAnswerBtn(word)
             })
-            if (ANSWER_SHOW_TIMEOUT){
+            if (ANSWER_SHOW_TIMEOUT) {
                 setTimeout(this._makeAnswersBtnActive.bind(this), ANSWER_SHOW_TIMEOUT)
             }
         }
@@ -724,7 +732,7 @@
             this.asnwerBlock.appendChild(btn)
             btn.addEventListener('click', this._answerBtnClickEvent)
 
-            if (ANSWER_SHOW_TIMEOUT){
+            if (ANSWER_SHOW_TIMEOUT) {
                 btn.setAttribute('disabled', 'disabled')
                 btn.style.filter = 'blur(3px)'
             }
@@ -736,9 +744,9 @@
             var userWordId = btn.dataset.wordId
             cardTrainer.proccesUserAnswer(userWordId)
         }
-        _drawSentence(sentence){
+        _drawSentence(sentence) {
             console.log(sentence)
-            if (sentence){
+            if (sentence) {
                 this.sentenceBlock.innerText = sentence['sentence']
                 this.sentenceTranslateBlock.innerText = sentence['translate']
 
@@ -749,7 +757,7 @@
                 this.sentenceTranslateBlock.style.display = 'none'
             }
         }
-        _makeAnswersBtnActive(){
+        _makeAnswersBtnActive() {
             var answerBtns = this.asnwerBlock.querySelectorAll('.answer-option')
             answerBtns.forEach(btn => {
                 btn.removeAttribute('disabled')
@@ -757,7 +765,7 @@
             })
         }
 
-        
+
 
         removeAnswersById(wordsIds) {
             wordsIds.forEach(wordId => {
@@ -847,7 +855,7 @@
 
         start() {
             if (this.regime != null) {
-                
+
                 this.cardView.show()
                 this.getCard(true)
                 this.regimesView.hide()
@@ -950,7 +958,7 @@
             this.cardView.help50Btn.style.display = 'none'
         }
 
-        dontKnowBtn(){
+        dontKnowBtn() {
             this.cardView._showBackAnswer()
             this.cardView.showBack()
             this.getCard()
