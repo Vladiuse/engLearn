@@ -33,6 +33,9 @@ class UserWord(models.Model):
     class Meta:
         unique_together = ('owner', 'en', 'ru')
 
+    def __str__(self):
+        return f'{self.en} - {self.ru}'
+
     @staticmethod
     def is_user_has_words_to_train(user):
         if user.is_authenticated:
