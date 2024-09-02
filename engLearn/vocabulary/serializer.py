@@ -17,7 +17,7 @@ class UserWordSerializer(serializers.ModelSerializer):
         validators = [
             UniqueTogetherValidator(
                 queryset=UserWord.objects.all(),
-                fields=['owner', 'word']
+                fields=['owner', 'ru', 'en']
             )
         ]
 

@@ -1,20 +1,24 @@
 from django.db import models
 from django.contrib.auth.models import User
-from words.models import Word
-
 
 
 class UserWord(models.Model):
     LEARNED = 'learned'
     LEARNING = 'learning'
+    POSTPONED = 'postponed'
     STATUSES = (
-        (LEARNED,'Выучено'),
-        (LEARNING,'Изучаю'),
-
+        (LEARNED, 'Выучено'),
+        (LEARNING, 'Изучаю'),
+        (POSTPONED, 'Отложено'),
     )
-    word = models.ForeignKey(
-        to=Word,
-        on_delete=models.CASCADE,
+    en = models.CharField(
+        max_length=100
+    )
+    ru = models.CharField(
+        max_length=100
+    )
+    created = models.DateField(
+        auto_now=True
     )
     owner = models.ForeignKey(
         to=User,
@@ -25,23 +29,23 @@ class UserWord(models.Model):
         choices=STATUSES,
         default=LEARNING,
     )
-    wrong_answer_count = models.PositiveIntegerField(
-        blank=True,
-        default=0,
-    )
-    correct_answer_count = models.PositiveIntegerField(
-        blank=True,
-        default=0,
-    )
 
     class Meta:
-        unique_together = ('owner', 'word')
+        unique_together = ('owner', 'en', 'ru')
 
     @staticmethod
     def is_user_has_words_to_train(user):
         if user.is_authenticated:
             return UserWord.objects.filter(owner=user, status=UserWord.LEARNING).exists()
         return False
+
+class Sentence(models.Model):
+    words = models.ManyToManyField(to=UserWord, related_name='sentences', related_query_name='sentence')
+    en = models.CharField(max_length=255)
+    ru = models.CharField(max_length=255, blank=True)
+
+    def __str__(self):
+        return str(self.en)
 
 
 class Vocabulary:
@@ -57,7 +61,10 @@ class Vocabulary:
         total_words = self.total_words
         words_learned = self.words_learned
         words_learning = total_words -  words_learned
-        percent =  round(words_learned / total_words * 100)
+        if total_words !=0:
+            percent =  round(words_learned / total_words * 100)
+        else:
+            percent = 0
         data = {
             'total_words': total_words,
             'words_learned':words_learned,

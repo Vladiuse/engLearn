@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from rest_framework.validators import ValidationError
-from words.models import Word, TranslationDirection, Sentence
+from words.models import Word, TranslationDirection
+from vocabulary.models import Sentence, UserWord
 from .cardtrainer import Card, CardTrainer
 
 class TranslationDirectionSerializer(serializers.Serializer):

@@ -91,11 +91,3 @@ class IrregularVerb(models.Model):
     second_form = models.CharField(max_length=30)
     third_form = models.CharField(max_length=30)
 
-
-class Sentence(models.Model):
-    words = models.ManyToManyField(to=Word, related_name='sentences', related_query_name='sentence')
-    en = models.CharField(max_length=255)
-    ru = models.CharField(max_length=255, blank=True)
-
-    def __str__(self):
-        return str(self.en)

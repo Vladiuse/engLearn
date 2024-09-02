@@ -43,9 +43,9 @@
   <div class="word-cloud">
     {%for user_word in object_list%}
     {%if user_word.status == 'learned'%}
-    <button type="button" class="btn btn-lg btn-success">{{user_word.word.en}} - {{user_word.word.ru}}</button>
+    <button type="button" class="btn btn-lg btn-success">{{user_word.en}} - {{user_word.ru}}</button>
     {%else%}
-    <button type="button" class="btn btn-lg btn-outline-secondary">{{user_word.word.en}} - {{user_word.word.ru}}</button>
+    <button type="button" class="btn btn-lg btn-outline-secondary">{{user_word.en}} - {{user_word.ru}}</button>
     {%endif%}
   {%endfor%}
   </div>

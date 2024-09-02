@@ -2,9 +2,8 @@ from words.models import Word, TranslationDirection, EnglishLevel
 from typing import List
 import random as r
 from django.contrib.auth.models import User
-from vocabulary.models import UserWord
+from vocabulary.models import UserWord, Sentence
 from .exceptions import NoWordsToLearError
-from words.models import Sentence
 
 
 class Card:
@@ -43,8 +42,7 @@ class CardTrainer:
 
     def get_queryset(self):
         if self.user.is_authenticated and self.regime == CardTrainer.USER_VOC_REGIME:
-            userwords_ids = UserWord.objects.filter(owner=self.user, status=UserWord.LEARNING).values('word')
-            return Word.objects.filter(pk__in=userwords_ids)
+            return UserWord.objects.filter(owner=self.user, status=UserWord.LEARNING)
         else:
             level = EnglishLevel.get_by_id(self.regime)
             return Word.objects.filter(number_in_dict__range=level.words_range)
@@ -78,5 +76,6 @@ class CardTrainer:
         return answers
 
     def _get_sentence(self, word) -> Sentence | None:
-        sentence = word.sentences.order_by('?').first()
-        return sentence
+        if isinstance(word, UserWord):
+            return word.sentences.order_by('?').first()
+
